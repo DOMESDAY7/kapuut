@@ -5,9 +5,7 @@ import About from './pages/about';
 function App() {
 
   return (
-
     <Router>
-      <nav className='text-red-300'>test</nav>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
