@@ -1,0 +1,1 @@
+Pour générer la bdd : bunx prisma db push
