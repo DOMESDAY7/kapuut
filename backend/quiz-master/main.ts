@@ -9,7 +9,11 @@ const wss = Bun.serve({
     websocket: {
         message(ws, message) {
             console.log("Message received from client:", message);
-            ws.send("A message is received.");
+            ws.send("A message is received from the client.");
+            if (message === "close") {
+                
+                ws.close();
+            }
         },
         open(ws) {
             console.log("A socket is opened.");
