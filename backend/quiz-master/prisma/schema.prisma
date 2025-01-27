@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,18 +7,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+model Themes {
+  themeId  String      @id @default(cuid())
+  theme    String
+  question Questions[]
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Questions {
+  questionId String    @id @default(cuid())
+  question   String
+  Answer     Answers[]
+  themeId    String
+  Themes     Themes    @relation(fields: [themeId], references: [themeId])
+}
+
+model Answers {
+  answerId   String    @id @default(cuid())
+  answer     String
+  isCorrect  Boolean   @default(false)
+  questionId String
+  question   Questions @relation(fields: [questionId], references: [questionId])
+}
+
+model Lobby {
+  lobbyId   String @id @default(cuid())
+  lobbyCode String @default(cuid())
+
+  Player Player[]
+}
+
+model Player {
+  playerId String @id @default(cuid())
+  name     String
+  score    Int
+  lobbyId  String
+  Lobby    Lobby  @relation(fields: [lobbyId], references: [lobbyId])
 }
