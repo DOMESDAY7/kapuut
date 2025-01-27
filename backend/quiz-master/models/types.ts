@@ -1,5 +1,6 @@
 enum WsMessageType {
     Connect,
+    Start,
     Answer,
     Close
 }
@@ -9,7 +10,7 @@ interface AnswerData {
     answer: string;
 }
 
-interface WsMessage {
+export interface WsMessage {
     type: WsMessageType;
     data: null | AnswerData;
     date: Date;
