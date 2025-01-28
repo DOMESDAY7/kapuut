@@ -9,7 +9,7 @@ import {
 export class WebSocketServer {
     static instance: WebSocketServer;
     private server?: Server;
-    private lobbys?: Map<string, string>; // playerId, lobbyId
+    // private clients?: Map<string, string>; // playerId, websocketId
 
     private constructor() {}
 

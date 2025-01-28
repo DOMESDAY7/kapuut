@@ -1,11 +1,13 @@
 import type { ServerWebSocket } from "bun";
-import type { WsMessage } from "../../models/types";
 import { gameManager } from "../game-manager";
+import { WebSocketServer } from "./ws";
+
+const server = WebSocketServer.getInstance();
 
 export function handlerMessage(ws: ServerWebSocket<unknown>, message: string | Buffer) {
-    const obj: WsMessage = JSON.parse(message.toString());
+    const obj = JSON.parse(message.toString());
     ws.send("A message is received from the client.");
-    gameManager(ws, obj);
+    gameManager(obj.type, message);
 }
 
 export function handlerOpen(ws: ServerWebSocket<unknown>) {

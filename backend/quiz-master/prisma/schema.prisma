@@ -4,12 +4,12 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:../../../db/database.db"
 }
 
-model Themes {
-  themeId  String      @id @default(cuid())
-  theme    String
+model Quizzes {
+  quizId   String      @id @default(cuid())
+  quiz     String
   question Questions[]
 }
 
@@ -17,8 +17,8 @@ model Questions {
   questionId String    @id @default(cuid())
   question   String
   Answer     Answers[]
-  themeId    String
-  Themes     Themes    @relation(fields: [themeId], references: [themeId])
+  quizId     String
+  Quizzes    Quizzes   @relation(fields: [quizId], references: [quizId])
 }
 
 model Answers {
@@ -31,7 +31,7 @@ model Answers {
 
 model Lobby {
   lobbyId          String   @id @default(cuid())
-  lobbyCode        String   @default(cuid())
+  lobbyCode        String   @unique @default(cuid())
   current_question Int      @default(0)
   isOver           Boolean  @default(false)
   Player           Player[]

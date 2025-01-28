@@ -1,1 +1,45 @@
 Pour générer la bdd : bunx prisma db push
+
+exemple requête SQL quizz :
+```
+-- Quiz
+INSERT INTO Quizzes (quizId, quiz)
+VALUES ('quiz123', 'Exemple de Quiz');
+
+INSERT INTO maQuestions (questionId, question, quizId)
+VALUES
+    ('question1', 'Quelle est la capitale de la France ?', 'quiz123'),
+    ('question2', 'Combien de continents y a-t-il dans le monde ?', 'quiz123'),
+    ('question3', 'Quel est le plus grand océan sur Terre ?', 'quiz123'),
+    ('question4', 'En quelle année a eu lieu le premier pas sur la Lune ?', 'quiz123'),
+    ('question5', 'Quel est le plus petit pays du monde ?', 'quiz123');
+
+-- Réponses
+INSERT INTO Answers (answerId, answer, isCorrect, questionId)
+VALUES
+    -- Question 1
+    ('answer1_1', 'Paris', true, 'question1'),
+    ('answer1_2', 'Londres', false, 'question1'),
+    ('answer1_3', 'Berlin', false, 'question1'),
+    ('answer1_4', 'Madrid', false, 'question1'),
+    -- Question 2
+    ('answer2_1', '5', false, 'question2'),
+    ('answer2_2', '6', false, 'question2'),
+    ('answer2_3', '7', true, 'question2'),
+    ('answer2_4', '8', false, 'question2'),
+    -- Question 3
+    ('answer3_1', 'Atlantique', false, 'question3'),
+    ('answer3_2', 'Arctique', false, 'question3'),
+    ('answer3_3', 'Pacifique', true, 'question3'),
+    ('answer3_4', 'Indien', false, 'question3'),
+    -- Question 4
+    ('answer4_1', '1969', true, 'question4'),
+    ('answer4_2', '1972', false, 'question4'),
+    ('answer4_3', '1965', false, 'question4'),
+    ('answer4_4', '1970', false, 'question4'),
+    -- Question 5
+    ('answer5_1', 'Vatican', true, 'question5'),
+    ('answer5_2', 'Monaco', false, 'question5'),
+    ('answer5_3', 'Liechtenstein', false, 'question5'),
+    ('answer5_4', 'Malte', false, 'question5');
+```
