@@ -11,5 +11,8 @@
   "dependencies": {
     "@prisma/client": "6.2.1",
     "prisma": "^6.2.1"
+  },
+  "scripts": {
+    "start": "bun run --watch src/main.ts"
   }
 }
