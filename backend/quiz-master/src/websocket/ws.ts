@@ -1,4 +1,4 @@
-import type { Server, ServerWebSocket } from "bun";
+import type { Server } from "bun";
 import {
     handlerClose,
     handlerDrain,
@@ -9,6 +9,7 @@ import {
 export class WebSocketServer {
     static instance: WebSocketServer;
     private server?: Server;
+    private lobbys?: Map<string, string>; // playerId, lobbyId
 
     private constructor() {}
 

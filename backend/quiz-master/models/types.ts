@@ -1,4 +1,5 @@
 enum WsMessageType {
+    Create,
     Connect,
     Start,
     Answer,

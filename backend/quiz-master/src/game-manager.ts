@@ -1,11 +1,12 @@
 import type { ServerWebSocket } from "bun";
 import type { WsMessage } from "../models/types";
+import { WebSocketServer } from "./websocket/ws";
 
-export function gameManager(ws: ServerWebSocket<unknown>, message: WsMessage): void {
-    if(message.type === 1) {
+const server = WebSocketServer.getInstance();
+
+export async function gameManager(ws: ServerWebSocket<unknown>, message: WsMessage): Promise<void> {
+    // Create a new lobby
+    if(message.type === 0) {
         
-    } else
-    if(message.type === 2) {
-        const playerId = ws.remoteAddress;
     }
 }
