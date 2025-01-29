@@ -1,4 +1,4 @@
-import type { Server } from "bun";
+import type { Server, ServerWebSocket } from "bun";
 import {
     handlerClose,
     handlerDrain,
@@ -9,7 +9,7 @@ import {
 export class WebSocketServer {
     static instance: WebSocketServer;
     private server?: Server;
-    // private clients?: Map<string, string>; // playerId, websocketId
+    private clients: ClientWs[] = [];
 
     private constructor() {}
 
@@ -32,12 +32,15 @@ export class WebSocketServer {
             },
             websocket: {
                 message: (ws, message) => {
+                    ws.send("< message received >");
                     handlerMessage(ws, message);
                 },
                 open: (ws) => {
+                    ws.send("< socket opened >");
                     handlerOpen(ws);
                 },
                 close: (ws, code, message) => {
+                    this.deleteClientByWs(ws);
                     handlerClose(ws, code, message);
                 },
                 drain: (ws) => {
@@ -54,4 +57,47 @@ export class WebSocketServer {
     public stop(): void {
         this.server?.stop(true);
     }
+
+    public addClient(
+        ws: ServerWebSocket<unknown>,
+        playerId: string,
+        lobbyId: string
+    ): void {
+        const data: ClientWs = {
+            ws: ws,
+            playerId: playerId,
+            lobbyId: lobbyId,
+        };
+        this.clients.push(data);
+    }
+
+    public deleteClientById(playerId: string): void {
+        this.clients = this.clients.filter(
+            (client) => client.playerId !== playerId
+        );
+    }
+
+    private deleteClientByWs(ws: ServerWebSocket<unknown>): void {
+        this.clients = this.clients.filter((client) => client.ws !== ws);
+    }
+
+    public sendMessageToAClient(playerId: string, message: string): void {
+        const client = this.clients.find(
+            (client) => client.playerId === playerId
+        );
+        client?.ws.send(message);
+    }
+
+    public sendMessageToALobby(lobbyId: string, message: string): void {
+        const clients = this.clients.filter(
+            (client) => client.lobbyId === lobbyId
+        );
+        clients.forEach((client) => client.ws.send(message));
+    }
+}
+
+interface ClientWs {
+    ws: ServerWebSocket<unknown>;
+    playerId: string;
+    lobbyId: string;
 }

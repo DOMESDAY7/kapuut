@@ -1,7 +1,7 @@
 import prisma from "../prisma/client";
 
 export const createPlayer = async (name: string, lobbyCode: string) => {
-    const lobby = await prisma.lobby.findUnique({
+    const lobby = await prisma.lobbys.findUnique({
         where: {
             lobbyCode: lobbyCode,
         },
@@ -11,7 +11,7 @@ export const createPlayer = async (name: string, lobbyCode: string) => {
         throw new Error(`Lobby with code "${lobbyCode}" not found.`);
     }
 
-    const player = await prisma.player.create({
+    const player = await prisma.players.create({
         data: {
             name,
             score: 0,
@@ -26,14 +26,18 @@ export const createPlayer = async (name: string, lobbyCode: string) => {
 };
 
 export const getPlayer = async (playerId: string) => {
-    return await prisma.player.findUnique({
+    return await prisma.players.findUnique({
         where: {
             playerId,
         },
     });
 };
 
-export const updatePlayer = async (playerId: string, name?: string, score?: number) => {
+export const updatePlayer = async (
+    playerId: string,
+    name?: string,
+    score?: number
+) => {
     const data: { name?: string; score?: number } = {};
 
     if (name !== undefined) {
@@ -44,7 +48,7 @@ export const updatePlayer = async (playerId: string, name?: string, score?: numb
         data.score = score;
     }
 
-    return await prisma.player.update({
+    return await prisma.players.update({
         where: {
             playerId,
         },
@@ -53,7 +57,7 @@ export const updatePlayer = async (playerId: string, name?: string, score?: numb
 };
 
 export const deletePlayer = async (playerId: string) => {
-    return await prisma.player.delete({
+    return await prisma.players.delete({
         where: {
             playerId,
         },

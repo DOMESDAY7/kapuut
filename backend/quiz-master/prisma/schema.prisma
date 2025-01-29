@@ -29,18 +29,18 @@ model Answers {
   question   Questions @relation(fields: [questionId], references: [questionId])
 }
 
-model Lobby {
+model Lobbys {
   lobbyId          String   @id @default(cuid())
   lobbyCode        String   @unique @default(cuid())
   current_question Int      @default(0)
   isOver           Boolean  @default(false)
-  Player           Player[]
+  Player           Players[]
 }
 
-model Player {
+model Players {
   playerId String @id @default(cuid())
   name     String
   score    Int
   lobbyId  String
-  Lobby    Lobby  @relation(fields: [lobbyId], references: [lobbyId])
+  Lobby    Lobbys  @relation(fields: [lobbyId], references: [lobbyId])
 }
