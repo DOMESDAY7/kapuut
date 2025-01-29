@@ -30,11 +30,11 @@ model Answers {
 }
 
 model Lobbys {
-  lobbyId          String   @id @default(cuid())
-  lobbyCode        String   @unique @default(cuid())
-  current_question Int      @default(0)
-  isOver           Boolean  @default(false)
-  Player           Players[]
+  lobbyId         String    @id @default(cuid())
+  lobbyCode       String    @unique @default(cuid())
+  currentQuestion Int       @default(0)
+  isOver          Boolean   @default(false)
+  Player          Players[]
 }
 
 model Players {
@@ -42,5 +42,5 @@ model Players {
   name     String
   score    Int
   lobbyId  String
-  Lobby    Lobbys  @relation(fields: [lobbyId], references: [lobbyId])
+  Lobby    Lobbys @relation(fields: [lobbyId], references: [lobbyId])
 }
