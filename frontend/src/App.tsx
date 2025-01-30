@@ -5,12 +5,15 @@ import About from './pages/about';
 function App() {
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
-    </Router>
+    <div className='font-bricolage'>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/lobby/:id" element={<About />} />
+        </Routes>
+      </Router>
+    </div>
   )
 }
 

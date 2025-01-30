@@ -88,3 +88,10 @@
     background-color: #eee;
     transition: all 0.3s;
 }
+
+@font-face {
+    font-family: 'Bricolage';
+    src: url('/fonts/BricolageGrotesque.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
