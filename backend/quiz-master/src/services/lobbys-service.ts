@@ -1,10 +1,11 @@
 import prisma from "../prisma/client";
 
-export const createLobby = async () => {
-    const lobby = await prisma.lobbys.create({
-        data: {},
+export const createLobby = async (quizzId: string) => {
+    return await prisma.lobbys.create({
+        data: {
+            quizId: quizzId,
+        },
     });
-    return lobby.lobbyCode;
 };
 
 export const getLobbyByCode = async (lobbyCode: string) => {

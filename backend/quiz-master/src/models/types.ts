@@ -1,3 +1,5 @@
+import type { Answers, Questions } from "@prisma/client";
+
 export enum WsMessageType {
     create = "create",
     connect = "connect",
@@ -7,9 +9,10 @@ export enum WsMessageType {
     close = "close",
 }
 
-export interface createWsMessage {
+export interface CreateWsMessage {
     type: WsMessageType;
     date: Date;
+    quizId: string;
 }
 
 export interface ConnectWsMessage {
@@ -23,18 +26,23 @@ export interface StartWsMessage {
     lobbyCode: string;
 }
 
-export interface QuestionWsMessage {
-    type: WsMessageType;
-    question: string;
-    answers: string[];
-    correctAnswer: string;
-    time: number;
+interface QuizQuestionsState {
+    current: number;
+    end: number;
 }
 
-export interface answerWsMessage {
+export interface QuestionWsMessage {
+    type: WsMessageType;
+    question: Questions;
+    answers: Answers[];
+    time: Date;
+    state: QuizQuestionsState;
+}
+
+export interface AnswerWsMessage {
     type: WsMessageType;
     playerId: string;
-    answer: string;
+    answerId: string | null;
 }
 
 export interface CloseWsMessage {

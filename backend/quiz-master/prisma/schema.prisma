@@ -11,12 +11,13 @@ model Quizzes {
   quizId   String      @id @default(cuid())
   quiz     String
   question Questions[]
+  lobbys   Lobbys[]
 }
 
 model Questions {
   questionId String    @id @default(cuid())
   question   String
-  Answer     Answers[]
+  answer     Answers[]
   quizId     String
   Quizzes    Quizzes   @relation(fields: [quizId], references: [quizId])
 }
@@ -26,7 +27,7 @@ model Answers {
   answer     String
   isCorrect  Boolean   @default(false)
   questionId String
-  question   Questions @relation(fields: [questionId], references: [questionId])
+  Question   Questions @relation(fields: [questionId], references: [questionId])
 }
 
 model Lobbys {
@@ -34,7 +35,9 @@ model Lobbys {
   lobbyCode       String    @unique @default(cuid())
   currentQuestion Int       @default(0)
   isOver          Boolean   @default(false)
-  Player          Players[]
+  player          Players[]
+  quizId          String
+  Quizzes         Quizzes   @relation(fields: [quizId], references: [quizId])
 }
 
 model Players {

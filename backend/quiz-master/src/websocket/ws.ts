@@ -81,6 +81,16 @@ export class WebSocketServer {
         this.clients = this.clients.filter((client) => client.ws !== ws);
     }
 
+    public deleteLobby(lobbyId: string): void {
+        const clients = this.clients.filter(
+            (client) => client.lobbyId === lobbyId
+        );
+        clients.forEach((client) => {
+            client.ws.send(`< end game: ${lobbyId} >`);
+            this.deleteClientById(client.playerId);
+        });
+    }
+
     public sendMessageToAClient(playerId: string, message: string): void {
         const client = this.clients.find(
             (client) => client.playerId === playerId
