@@ -43,6 +43,7 @@ export interface AnswerWsMessage {
     type: WsMessageType;
     playerId: string;
     answerId: string | null;
+    lobbyCode: string;
 }
 
 export interface CloseWsMessage {

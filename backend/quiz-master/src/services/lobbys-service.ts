@@ -15,3 +15,26 @@ export const getLobbyByCode = async (lobbyCode: string) => {
         },
     });
 };
+
+export const updateLobby = async (
+    lobbyId: string,
+    currentQuestion?: number,
+    isOver?: boolean
+) => {
+    const data: { currentQuestion?: number; isOver?: boolean } = {};
+
+    if (currentQuestion !== undefined) {
+        data.currentQuestion = currentQuestion;
+    }
+
+    if (isOver !== undefined) {
+        data.isOver = isOver;
+    }
+
+    return await prisma.lobbys.update({
+        where: {
+            lobbyId,
+        },
+        data,
+    });
+};

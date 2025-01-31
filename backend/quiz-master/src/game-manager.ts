@@ -9,9 +9,18 @@ import {
     type QuestionWsMessage,
     type StartWsMessage,
 } from "./models/types";
-import { getAnswers } from "./services/answers-services";
-import { createLobby, getLobbyByCode } from "./services/lobbys-service";
-import { createPlayer } from "./services/players-service";
+import { getAnswers, getAnwserById } from "./services/answers-services";
+import {
+    createLobby,
+    getLobbyByCode,
+    updateLobby,
+} from "./services/lobbys-service";
+import {
+    createPlayer,
+    getAllPlayerByLobby,
+    getPlayer,
+    updatePlayer,
+} from "./services/players-service";
 import { getNQuestion } from "./services/questions-services";
 
 export async function gameManager(
@@ -21,65 +30,170 @@ export async function gameManager(
 ): Promise<void> {
     // Create a new lobby
     if (messageType === WsMessageType.create) {
-        const obj: CreateWsMessage = JSON.parse(message.toString());
-        createLobby(obj.quizId).then((lobby) => {
-            console.log(`Created lobby with code: ${lobby.lobbyCode}`);
-        });
+        try {
+            const obj: CreateWsMessage = JSON.parse(message.toString());
+            const lobby = await createLobby(obj.quizId);
+            ws.send(`< Lobby created! lobbyCode : ${lobby.lobbyCode} >`);
+        } catch (error) {
+            console.error("Error parsing message:", error);
+            ws.send(`< invalid JSON format : ${message} >`);
+        }
     }
 
     // Connect to a lobby
     else if (messageType === WsMessageType.connect) {
-        const obj: ConnectWsMessage = JSON.parse(message.toString());
-        createPlayer(obj.playerName, obj.lobbyCode).then((player) => {
+        try {
+            const obj: ConnectWsMessage = JSON.parse(message.toString());
+            const player = await createPlayer(obj.playerName, obj.lobbyCode);
             serve.addClient(ws, player.playerId, player.lobbyId);
-        });
+            ws.send(`< ${player.name} connected! playerId : ${player.playerId} >`);
+        } catch (error) {
+            console.error("Error parsing message:", error);
+            ws.send(`< invalid JSON format : ${message} >`);
+        }
     }
 
     // Start the game
     else if (messageType === WsMessageType.start) {
-        const obj: StartWsMessage = JSON.parse(message.toString());
-        getLobbyByCode(obj.lobbyCode).then((lobby) => {
-            if (lobby) {
-                serve.sendMessageToALobby(
-                    lobby.lobbyId,
-                    `< start game: ${lobby.lobbyCode} >`
-                );
-                sendQuestion(lobby.quizId, lobby.currentQuestion);
+        try {
+            const obj: StartWsMessage = JSON.parse(message.toString());
+            const lobby = await getLobbyByCode(obj.lobbyCode);
+            if (!lobby) {
+                console.error("Lobby not found");
+                return;
             }
-        });
+
+            ws.send(`< Game started! lobbyCode : ${lobby.lobbyCode} >`);
+            serve.sendMessageToALobby(
+                lobby.lobbyId,
+                `< Game started! lobbyCode : ${lobby.lobbyCode} >`
+            );
+            await sendQuestion(
+                lobby.quizId,
+                lobby.currentQuestion,
+                lobby.lobbyId
+            );
+        } catch (error) {
+            console.error("Error parsing message:", error);
+            ws.send(`< invalid JSON format : ${message} >`);
+        }
     }
 
     // Answer from player
     else if (messageType === WsMessageType.answer) {
-        const obj: AnswerWsMessage = JSON.parse(message.toString());
-        // TO DO
+        try {
+            const obj: AnswerWsMessage = JSON.parse(message.toString());
+            ws.send(`< Answer received! answerId : ${obj.answerId} >`);
+            await checkAnswer(obj.playerId, obj.answerId);
+            if (await everyoneAnswered(obj.lobbyCode))
+                await nextQuestion(obj.lobbyCode);
+        } catch (error) {
+            console.error("Error parsing message:", error);
+            ws.send(`< invalid JSON format : ${message} >`);
+        }
     }
 
     // Close the lobby
     else if (messageType === WsMessageType.close) {
-        const obj: CloseWsMessage = JSON.parse(message.toString());
-        getLobbyByCode(obj.lobbyCode).then((lobby) => {
-            if (lobby) {
-                serve.deleteLobby(lobby.lobbyId);
+        try {
+            const obj: CloseWsMessage = JSON.parse(message.toString());
+            const lobby = await getLobbyByCode(obj.lobbyCode);
+            if (!lobby) {
+                console.error("Lobby not found");
+                return;
             }
-        });
+
+            await updateLobby(lobby.lobbyId, undefined, true);
+            serve.deleteLobby(lobby.lobbyId);
+        } catch (error) {
+            console.error("Error parsing message:", error);
+            ws.send(`< invalid JSON format : ${message} >`);
+        }
     }
 }
 
-function sendQuestion(quizId: string, currentQuestion: number): void {
-    getNQuestion(quizId, currentQuestion).then((question) => {
-        getAnswers(question.question.questionId).then((answers) => {
-            const data: QuestionWsMessage = {
-                type: WsMessageType.question,
-                question: question.question,
-                answers: answers,
-                time: new Date(),
-                state: {
-                    current: currentQuestion,
-                    end: question.questionCount,
-                },
-            };
-            serve.sendMessageToALobby(quizId, JSON.stringify(data));
-        });
-    });
+async function nextQuestion(lobbyCode: string) {
+    const lobby = await getLobbyByCode(lobbyCode);
+
+    if (!lobby) {
+        console.error("Lobby not found");
+        return false;
+    }
+    if (!lobby.isOver) {
+        await updateLobby(lobby.lobbyId, lobby.currentQuestion + 1, undefined);
+        await sendQuestion(
+            lobby.quizId,
+            lobby.currentQuestion + 1,
+            lobby.lobbyId
+        );
+    }
+}
+
+async function everyoneAnswered(lobbyCode: string): Promise<boolean> {
+    const lobby = await getLobbyByCode(lobbyCode);
+    if (!lobby) {
+        console.error("Lobby not found");
+        return false;
+    }
+
+    const players = await getAllPlayerByLobby(lobby.lobbyId);
+
+    const allPlayersReady = players.every(
+        (player) => player.currentQuestion > lobby.currentQuestion
+    );
+
+    return allPlayersReady;
+}
+
+async function checkAnswer(playerId: string, answerId: string | null) {
+    const player = await getPlayer(playerId);
+    if (!player) {
+        console.error("Player not found");
+        return;
+    }
+
+    if (answerId != null) {
+        const answer = await getAnwserById(answerId);
+        if (answer?.isCorrect) {
+            await updatePlayer(
+                playerId,
+                undefined,
+                player.score + 1,
+                player.currentQuestion + 1
+            );
+        }
+    }
+
+    await updatePlayer(
+        playerId,
+        undefined,
+        undefined,
+        player.currentQuestion + 1
+    );
+}
+
+async function sendQuestion(
+    quizId: string,
+    currentQuestion: number,
+    lobbyId: string
+): Promise<void> {
+    const question = await getNQuestion(quizId, currentQuestion);
+    const answers = await getAnswers(question.question.questionId);
+
+    const data: QuestionWsMessage = {
+        type: WsMessageType.question,
+        question: question.question,
+        answers: answers,
+        time: new Date(),
+        state: {
+            current: currentQuestion + 1,
+            end: question.questionCount,
+        },
+    };
+
+    if (data.state.current > data.state.end) {
+        await updateLobby(lobbyId, undefined, true);
+    } else {
+        serve.sendMessageToALobby(lobbyId, JSON.stringify(data));
+    }
 }

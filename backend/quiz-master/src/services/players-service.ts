@@ -22,6 +22,7 @@ export const createPlayer = async (name: string, lobbyCode: string) => {
     return {
         playerId: player.playerId,
         lobbyId: player.lobbyId,
+        name: player.name,
     };
 };
 
@@ -36,9 +37,11 @@ export const getPlayer = async (playerId: string) => {
 export const updatePlayer = async (
     playerId: string,
     name?: string,
-    score?: number
+    score?: number,
+    currentQuestion?: number
 ) => {
-    const data: { name?: string; score?: number } = {};
+    const data: { name?: string; score?: number; currentQuestion?: number } =
+        {};
 
     if (name !== undefined) {
         data.name = name;
@@ -46,6 +49,10 @@ export const updatePlayer = async (
 
     if (score !== undefined) {
         data.score = score;
+    }
+
+    if (currentQuestion !== undefined) {
+        data.currentQuestion = currentQuestion;
     }
 
     return await prisma.players.update({
@@ -60,6 +67,14 @@ export const deletePlayer = async (playerId: string) => {
     return await prisma.players.delete({
         where: {
             playerId,
+        },
+    });
+};
+
+export const getAllPlayerByLobby = async (lobbyId: string) => {
+    return await prisma.players.findMany({
+        where: {
+            lobbyId,
         },
     });
 };

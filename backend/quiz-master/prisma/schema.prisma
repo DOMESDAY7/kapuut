@@ -41,9 +41,10 @@ model Lobbys {
 }
 
 model Players {
-  playerId String @id @default(cuid())
-  name     String
-  score    Int
-  lobbyId  String
-  Lobby    Lobbys @relation(fields: [lobbyId], references: [lobbyId])
+  playerId        String @id @default(cuid())
+  name            String
+  score           Int
+  currentQuestion Int    @default(0)
+  lobbyId         String
+  Lobby           Lobbys @relation(fields: [lobbyId], references: [lobbyId])
 }

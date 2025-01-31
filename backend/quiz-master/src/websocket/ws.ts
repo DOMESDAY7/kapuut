@@ -86,7 +86,7 @@ export class WebSocketServer {
             (client) => client.lobbyId === lobbyId
         );
         clients.forEach((client) => {
-            client.ws.send(`< end game: ${lobbyId} >`);
+            client.ws.send(`< End game! lobbyId : ${lobbyId} >`);
             this.deleteClientById(client.playerId);
         });
     }

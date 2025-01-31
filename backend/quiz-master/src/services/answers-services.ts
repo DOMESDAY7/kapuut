@@ -7,3 +7,11 @@ export const getAnswers = async (questionId: string) => {
         },
     });
 };
+
+export const getAnwserById = async (answerId: string) => {
+    return await prisma.answers.findUnique({
+        where: {
+            answerId,
+        },
+    });
+};

@@ -13,8 +13,8 @@ export const getNQuestion = async (quizId: string, nQuestion: number) => {
         where: {
             quizId,
         },
-        skip: nQuestion - 1, // Ignorer les questions précédentes (n - 1)
-        take: 1, // Récupérer seulement la nième question
+        skip: nQuestion,
+        take: 1,
     });
 
     const count = await prisma.questions.count({
