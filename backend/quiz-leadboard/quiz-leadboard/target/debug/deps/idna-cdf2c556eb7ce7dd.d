@@ -1,0 +1,10 @@
+/Users/erwan/Library/CloudStorage/GoogleDrive-erwan.gautier@edu.esiee.fr/My Drive/3ème année/Virtualisation/kahoot/backend/quiz-leadboard/quiz-leadboard/target/debug/deps/libidna-cdf2c556eb7ce7dd.rmeta: /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/lib.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/deprecated.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/punycode.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/uts46.rs
+
+/Users/erwan/Library/CloudStorage/GoogleDrive-erwan.gautier@edu.esiee.fr/My Drive/3ème année/Virtualisation/kahoot/backend/quiz-leadboard/quiz-leadboard/target/debug/deps/libidna-cdf2c556eb7ce7dd.rlib: /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/lib.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/deprecated.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/punycode.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/uts46.rs
+
+/Users/erwan/Library/CloudStorage/GoogleDrive-erwan.gautier@edu.esiee.fr/My Drive/3ème année/Virtualisation/kahoot/backend/quiz-leadboard/quiz-leadboard/target/debug/deps/idna-cdf2c556eb7ce7dd.d: /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/lib.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/deprecated.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/punycode.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/uts46.rs
+
+/Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/lib.rs:
+/Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/deprecated.rs:
+/Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/punycode.rs:
+/Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-1.0.3/src/uts46.rs:
