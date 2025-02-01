@@ -1,1 +1,4 @@
 Pour générer la bdd : bunx prisma db push
+
+run rust backend : cargo run
+run bunjs backend : bun run start
