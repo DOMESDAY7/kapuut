@@ -1,1 +1,1 @@
-export const APP_NAME = "kahoot";
+export const APP_NAME = "kapuut";
