@@ -1,3 +1,4 @@
+import H1 from '@/components/ui/H1';
 import { useQRCode } from 'next-qrcode';
 import { useParams } from 'react-router-dom';
 
@@ -22,37 +23,11 @@ export default function Lobby() {
         {
             name: "TrucMuche",
         },
-        {
-            name: "TrucMuche",
-        },
-        {
-            name: "TrucMuche",
-        },
-        {
-            name: "TrucMuche",
-        },
-        {
-            name: "TrucMuche",
-        },
-        {
-            name: "TrucMuche",
-        },
-        {
-            name: "TrucMuche",
-        },
-        {
-            name: "TrucMuche",
-        },
-        {
-            name: "TrucMuche",
-        },
-        {
-            name: "TrucMuche",
-        }
+       
     ]
 
     return (
-        <div className='flex flex-col items-center justify-center bg-purple-900 h-svh'>
+        <div className='flex flex-col items-center justify-center h-svh'>
             <Canvas
                 text={'/lobby/' + parms.id}
                 options={{
@@ -67,12 +42,16 @@ export default function Lobby() {
                 }}
             />
 
-            <p className='text-white text-3xl'>Lobby code : <pre className='bg-secondary p-1 rounded text-center'>{parms.id}</pre></p>
+            <div />
+            <div className="flex items-center justify-center gap-x-5">
+                <H1>Lobby code : </H1>
+                <p className='bg-secondary p-1 rounded text-center text-accent font-thin text-2xl'>{parms.id}</p>
+            </div>
 
-            <div className='' id="players">
+            <div className='flex flex-col flex-wrap gap-y-5' id="players">
                 {
                     players.map((player, index) => {
-                        return <div key={index} className='text-white bg-secondary'>{player.name}</div>
+                        return <div key={index} className='text-white bg-secondary rounded px-3 py-2 text-xl'>{player.name}</div>
                     })
                 }
             </div>

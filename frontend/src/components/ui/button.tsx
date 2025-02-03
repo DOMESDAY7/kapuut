@@ -5,37 +5,37 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex border border-accent items-center justify-center gap-2 whitespace-nowrap backdrop-blur-sm rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default: `
-          text-white bg-primary 
-          border-none px-4 py-2 text-base 
-          shadow-[0_7px_var(--primary-shadow)] 
-          active:translate-y-0.5 active:shadow-[0_5px_var(--primary-shadow)] 
+          text-white bg-primary/30 px-4 py-2 text-base 
           cursor-pointer`,
 
         destructive: `
-          text-destructive-foreground bg-destructive 
+          text-destructive-foreground bg-destructive/30 backdrop-blur-md
           shadow-[0_7px_var(--destructive-shadow)] 
           active:translate-y-0.5 active:shadow-[0_5px_var(--destructive-shadow)] 
           hover:bg-destructive/90`,
+
         outline: `
-          border border-input bg-background 
+          border border-input bg-background/30 backdrop-blur-md
           shadow-[0_7px_var(--muted-shadow)] 
           active:translate-y-0.5 active:shadow-[0_5px_var(--muted-shadow)] 
-          hover:bg-accent hover:text-accent-foreground`,
+          hover:bg-accent/50 hover:text-accent-foreground`,
+
         secondary: `
-          text-secondary-foreground bg-secondary 
+          text-secondary-foreground bg-secondary/30 backdrop-blur-md
           shadow-[0_7px_var(--secondary-shadow)] 
           active:translate-y-0.5 active:shadow-[0_5px_var(--secondary-shadow)] 
           hover:bg-secondary/80`,
+
         ghost: `
-          hover:bg-accent hover:text-accent-foreground `,
+          hover:bg-accent/50 hover:text-accent-foreground`,
+
         link: `
           text-primary underline-offset-4 hover:underline`,
-
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -49,12 +49,11 @@ const buttonVariants = cva(
       size: "default",
     },
   }
-);
-
+)
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-  VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonVariants> {
   asChild?: boolean
 }
 

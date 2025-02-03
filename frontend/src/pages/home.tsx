@@ -5,7 +5,7 @@ import { APP_NAME } from "@/consts";
 export default function Home() {
 
     return (
-        <div className="h-svh flex flex-col items-center justify-center bg-purple-900">
+        <div className="h-svh flex flex-col items-center justify-center">
             <h1 className="font-bold text-5xl text-white capitalize">
                 {APP_NAME} !
             </h1>
