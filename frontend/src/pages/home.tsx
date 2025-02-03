@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { APP_NAME } from "@/consts";
 
@@ -6,7 +7,8 @@ export default function Home() {
 
     return (
         <div className="h-svh flex flex-col items-center justify-center">
-            <h1 className="font-bold text-5xl text-white capitalize">
+
+            <h1 className="font-bold text-5xl text-white capitalize text-center">
                 {APP_NAME} !
             </h1>
             <div className="flex flex-col items-center jus tify-center gap-5 px-20 py-10 rounded">
@@ -19,13 +21,11 @@ export default function Home() {
                             </svg>
                         </Button>
                     </div>
-
                     <div className="flex items-center justify-center gap-x-3 w-full py-2">
                         <div className="flex-1 border-t border-white" />
                         <p className="text-white">Ou</p>
                         <div className="flex-1 border-t border-white" />
                     </div>
-
                 </div>
                 <Button variant="default" size="default" className="w-full">Créer un questionnaire</Button>
             </div>

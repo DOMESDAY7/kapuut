@@ -5,7 +5,7 @@
     --color-secondary: #300454;
     --color-accent: #ffffff;
     --color-destructive: #e83030;
-    --color-input: #000;
+    --color-input: #fff;
     --primary-shadow: color-mix(in srgb, hsl(var(--color-primary)) 50%, black 50%);
     --font-display: "Bricolage", "sans-serif";
 }

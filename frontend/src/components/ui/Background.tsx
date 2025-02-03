@@ -16,7 +16,7 @@ export default function Background() {
     canvasElement.height = window.innerHeight;
 
     const bubblesArray: Bubble[] = [];
-    const numberOfBubbles = 200;
+    const numberOfBubbles = 100;
 
     class Bubble {
       x: number;
