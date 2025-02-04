@@ -1,17 +1,22 @@
-package quiz_creator
+package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"quiz_creator/internal/Quiz"
 
-type QuizCreator struct {
-}
-type QuizCreatorAI struct {
-}
+	"github.com/gofiber/fiber/v2"
+)
 
 func main() {
 
 	app := fiber.New()
+
 	// Create a new Quiz
-	app.Post("/quiz")
+	app.Post("/quiz", func(c *fiber.Ctx) error {
+		c.Accepts("json", "text")
+
+		return Quiz.HandleCreateQuiz(c)
+	})
+
 	// Create a new AI Quiz
 	app.Post("/quiz/ai", func(c *fiber.Ctx) error {
 		return c.SendString("Create AI quiz")
