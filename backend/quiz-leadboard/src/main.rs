@@ -1,6 +1,8 @@
 use rusqlite::{Connection, Result};
 use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
 use serde::Serialize;
+use std::env;
+use dotenvy::dotenv;
 
 #[derive(Debug, Serialize)]
 struct Leaderboard {
@@ -15,7 +17,10 @@ struct ErrorResponse {
 }
 
 fn get_leaderboard_from_db(lobby_code: String) -> Result<Vec<Leaderboard>> {
-    let conn = Connection::open("../../../db/database.db")?;
+    dotenv().ok();
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+
+    let conn = Connection::open(database_url)?;
     
     let mut stmt = conn.prepare(
         "
