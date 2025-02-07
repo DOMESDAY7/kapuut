@@ -1,0 +1,18 @@
+# Config file for Air (Hot Reload)
+root = "."  
+tmp_dir = "tmp"  
+
+[build]
+  cmd = "go build -o ./tmp/main ./cmd/main.go"  
+  bin = "tmp/main"
+  exclude_dir = ["tmp", "vendor"]
+  delay = 1000 # Milliseconds before restarting
+  stop_on_error = true
+
+[log]
+  level = "debug"
+
+[watcher]
+  paths = ["./internal", "./cmd"]
+  extensions = [".go", ".tpl", ".tmpl", ".html"]
+  ignore = ["tmp", "vendor"]
