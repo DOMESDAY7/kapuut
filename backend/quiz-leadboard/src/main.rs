@@ -1,8 +1,8 @@
-use rusqlite::{Connection, Result};
 use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
 use serde::Serialize;
 use std::env;
 use dotenvy::dotenv;
+use tokio_postgres::{NoTls, Error};
 
 #[derive(Debug, Serialize)]
 struct Leaderboard {
@@ -16,30 +16,38 @@ struct ErrorResponse {
     message: String,
 }
 
-fn get_leaderboard_from_db(lobby_code: String) -> Result<Vec<Leaderboard>> {
+async fn get_leaderboard_from_db(lobby_code: String) -> Result<Vec<Leaderboard>, Error> {
     dotenv().ok();
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
-    let conn = Connection::open(database_url)?;
-    
-    let mut stmt = conn.prepare(
-        "
-        SELECT p.playerId, p.name, p.score
-        FROM Players p
-        INNER JOIN Lobbys l ON p.lobbyId = l.lobbyId
-        WHERE l.lobbyCode = ?
-        ORDER BY p.score DESC;
-        "
-    )?;
-    
-    let leaderboard_iter = stmt.query_map([lobby_code], |row| {
+    let (client, connection) = tokio_postgres::connect(database_url.as_str(), NoTls).await?;
+
+    tokio::spawn(async move {
+        if let Err(e) = connection.await {
+            eprintln!("connection error: {}", e);
+        }
+    });
+
+    let query = "
+        SELECT p.\"playerId\", p.\"name\", p.\"score\"
+        FROM \"Players\" p
+        INNER JOIN \"Lobbys\" l ON p.\"lobbyId\" = l.\"lobbyId\"
+        WHERE l.\"lobbyCode\" = $1
+        ORDER BY p.\"score\" DESC;
+    ";
+
+    let rows = client
+        .query(query, &[&lobby_code])
+        .await?;
+
+    let leaderboard_iter = rows.iter().map(|row| {
         Ok(Leaderboard {
-            player_id: row.get(0)?,
-            name: row.get(1)?,
-            score: row.get(2)?,
+            player_id: row.get(0),
+            name: row.get(1),
+            score: row.get(2),
         })
-    })?;
-    
+    });
+
     let mut results = Vec::new();
     for leaderboard in leaderboard_iter {
         results.push(leaderboard?);
@@ -52,7 +60,7 @@ fn get_leaderboard_from_db(lobby_code: String) -> Result<Vec<Leaderboard>> {
 async fn get_leaderboard(lobby_code: web::Path<String>) -> impl Responder {
     let lobby_code = lobby_code.into_inner();
     
-    match get_leaderboard_from_db(lobby_code) {
+    match get_leaderboard_from_db(lobby_code).await {
         Ok(leaderboard) => {
             HttpResponse::Ok().json(leaderboard)
         },
