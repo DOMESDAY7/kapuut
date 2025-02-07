@@ -13,30 +13,30 @@ import (
 )
 
 func main() {
-	// Charger les variables d'environnement depuis le fichier .env (si présent)
+	// Load environment variables from the .env file (if present)
 	if err := godotenv.Load(); err != nil {
-		log.Println("Aucun fichier .env trouvé, utilisation des variables d'environnement système")
+		log.Println("No .env file found, using system environment variables")
 	}
 
-	// Récupérer la chaîne de connexion PostgreSQL depuis la variable DATABASE_URL
+	// Retrieve the PostgreSQL connection string from the DATABASE_URL environment variable
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
-		log.Fatal("La variable d'environnement DATABASE_URL n'est pas définie")
+		log.Fatal("The DATABASE_URL environment variable is not set")
 	}
 
-	// Ouvrir la connexion à PostgreSQL
+	// Open a connection to PostgreSQL
 	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
-		log.Fatal("Erreur lors de la connexion à la base de données :", err)
+		log.Fatal("Error connecting to the database:", err)
 	}
 	defer db.Close()
 
-	// Vérifier la connexion à la base
+	// Check the database connection
 	if err := db.Ping(); err != nil {
-		log.Fatal("Erreur lors du ping de la base de données :", err)
+		log.Fatal("Error pinging the database:", err)
 	}
 
-	// Initialiser le repository et le service avec la connexion DB
+	// Initialize the repository and service with the database connection
 	quizRepo := quiz.NewQuizRepository(db)
 	quizService := quiz.NewQuizService(quizRepo)
 
@@ -50,25 +50,25 @@ func main() {
 		var q quiz.Quiz
 
 		if err := c.BodyParser(&q); err != nil {
-			fmt.Println("Erreur lors de l'analyse du corps de la requête :", err)
+			fmt.Println("Error parsing the request body:", err)
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Corps de la requête invalide",
+				"error": "Invalid request body",
 			})
 		}
 
 		if err := quizService.HandleCreateQuiz(q); err != nil {
-			fmt.Println("Erreur lors de la création du quiz :", err)
+			fmt.Println("Error creating the quiz:", err)
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(),
 			})
 		}
 
-		fmt.Println("Quiz créé avec succès")
+		fmt.Println("Quiz created successfully")
 		return c.Status(fiber.StatusCreated).JSON(fiber.Map{
-			"message": "Quiz créé avec succès",
+			"message": "Quiz created successfully",
 		})
 	})
-
-	fmt.Println("🚀 Serveur en écoute sur http://localhost:3100")
-	log.Fatal(app.Listen(":3100"))
+	port := "3100"
+	fmt.Println("🚀 Server running on http://localhost:", port)
+	log.Fatal(app.Listen(":" + port))
 }
