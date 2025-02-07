@@ -13,6 +13,8 @@
     "prisma": "^6.2.1"
   },
   "scripts": {
-    "start": "bun run --watch src/main.ts"
+    "start": "bun run --watch src/main.ts",
+    "db:studio": "bunx prisma studio",
+    "db:push": "bunx prisma db push"
   }
 }
