@@ -1,1 +1,5 @@
-.env.production
+.env
+.env.*
+
+# go binary
+main
