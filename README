@@ -1,1 +1,5 @@
 run rust backend : cargo run
+
+docker build quiz-master : docker build -t bun-quiz-master .
+
+docker run quiz-master : docker run -d -p 3000:3000 --env-file .env --name bun-quiz-master  bun-quiz-master

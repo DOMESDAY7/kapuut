@@ -1,4 +1,4 @@
-import prisma from "../prisma/client";
+import prisma from "../db/client";
 
 export const createLobby = async (quizzId: string) => {
     return await prisma.lobbys.create({
