@@ -1066,7 +1066,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "quiz-leadboard"
+name = "quiz-leaderboard"
 version = "0.1.0"
 dependencies = [
  "actix-web",

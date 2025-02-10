@@ -4,6 +4,6 @@ COPY . /app
 RUN cargo build --release
 
 FROM gcr.io/distroless/cc-debian12
-COPY --from=build-env /app/target/release/quiz-leadboard /
 EXPOSE 8080
-CMD ["./quiz-leadboard"]
+COPY --from=build-env /app/target/release/quiz-leaderboard /
+CMD ["./quiz-leaderboard"]
