@@ -1,4 +1,4 @@
-import prisma from "../prisma/client";
+import prisma from "../db/client";
 
 export const createPlayer = async (name: string, lobbyCode: string) => {
     const lobby = await prisma.lobbys.findUnique({

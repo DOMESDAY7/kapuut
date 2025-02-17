@@ -1,9 +1,0 @@
-[package]
-name = "quiz-leadboard"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-actix-web = "4.9.0"
-rusqlite = "0.33.0"
-serde = { version = "1.0.217", features = ["derive"] }

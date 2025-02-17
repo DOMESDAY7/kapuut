@@ -1,9 +1,0 @@
-/Users/erwan/Library/CloudStorage/GoogleDrive-erwan.gautier@edu.esiee.fr/My Drive/3ème année/Virtualisation/kahoot/backend/quiz-leadboard/quiz-leadboard/target/debug/deps/libzstd_sys-4ab68b8c3c09c647.rmeta: /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/lib.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/bindings_zstd.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/bindings_zdict.rs
-
-/Users/erwan/Library/CloudStorage/GoogleDrive-erwan.gautier@edu.esiee.fr/My Drive/3ème année/Virtualisation/kahoot/backend/quiz-leadboard/quiz-leadboard/target/debug/deps/libzstd_sys-4ab68b8c3c09c647.rlib: /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/lib.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/bindings_zstd.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/bindings_zdict.rs
-
-/Users/erwan/Library/CloudStorage/GoogleDrive-erwan.gautier@edu.esiee.fr/My Drive/3ème année/Virtualisation/kahoot/backend/quiz-leadboard/quiz-leadboard/target/debug/deps/zstd_sys-4ab68b8c3c09c647.d: /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/lib.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/bindings_zstd.rs /Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/bindings_zdict.rs
-
-/Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/lib.rs:
-/Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/bindings_zstd.rs:
-/Users/erwan/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-sys-2.0.13+zstd.1.5.6/src/bindings_zdict.rs:
