@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-export default function About() {
+export default function AboutPage() {
     return (
         <>
             <h1 className="text-blue-500">About</h1>

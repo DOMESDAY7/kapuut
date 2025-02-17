@@ -3,7 +3,7 @@ import { avatarList } from '@/consts';
 import { useQRCode } from 'next-qrcode';
 import { useParams } from 'react-router-dom';
 
-export default function Lobby() {
+export default function LobbyPage() {
     const { Canvas } = useQRCode();
 
     let parms = useParams();

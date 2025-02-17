@@ -1,9 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/home';
-import About from './pages/about';
-import Lobby from './pages/lobby';
-import ProfileSetup from './pages/profile-setup';
+import HomePage from './pages/home';
+import AboutPage from './pages/about';
+import LobbyPage from './pages/lobby';
+import ProfileSetupPage from './pages/profile-setup';
 import Background from './components/ui/Background';
+import CreateQuizPage from './pages/create-quiz';
 
 function App() {
 
@@ -12,10 +13,11 @@ function App() {
       <Background />
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/lobby/:id" element={<Lobby />} />
-          <Route path="/profile-setup" element={<ProfileSetup />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/lobby/:id" element={<LobbyPage />} />
+          <Route path="/profile-setup" element={<ProfileSetupPage />} />
+          <Route path="/create-quiz" element={<CreateQuizPage />} />
         </Routes>
       </Router>
     </div>
