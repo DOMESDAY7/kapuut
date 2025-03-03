@@ -24,11 +24,12 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.CR_PAT }} 
+          password: ${{ secrets.CR_PAT }}  
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./backend/quiz-creator
+          file: ./backend/quiz-creator/Dockerfile
           push: true
           tags: ghcr.io/kapuut-quiz-creator:latest
