@@ -33,3 +33,6 @@ jobs:
           file: ./backend/quiz-master/Dockerfile
           push: true
           tags: ghcr.io/DOMESDAY7/kapuut-quiz-master:latest
+          labels: |
+            maintainer=${{ github.actor }}
+            org.opencontainers.image.source=${{ github.repository }}
