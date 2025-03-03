@@ -28,12 +28,12 @@ jobs:
 
       - name: Set lowercase actor
         id: lowercase_actor
-        run: echo "actor=domsday7" >> $GITHUB_ENV
+        run: echo "actor=domesday7" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./backend/quiz-leaderboad
-          file: ./backend/quiz-leaderboad/Dockerfile
+          context: ./backend/quiz-leaderboard
+          file: ./backend/quiz-leaderboard/Dockerfile
           push: true
-          tags: ghcr.io/${{ env.actor }}/kapuut-quiz-leaderboad:latest 
+          tags: ghcr.io/${{ env.actor }}/kapuut-quiz-leaderboard:latest 
