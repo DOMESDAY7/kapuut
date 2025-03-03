@@ -32,4 +32,4 @@ jobs:
           context: ./backend/quiz-master
           file: ./backend/quiz-master/Dockerfile
           push: true
-          tags: ghcr.io/kapuut-quiz-master:latest
+          tags: ghcr.io/DOMESDAY7/kapuut-quiz-master:latest
