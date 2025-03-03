@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rentalservice
+    version: "1.0"
+  name: rentalservice
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rentalservice
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: rentalservice
+    spec:
+      containers:
+        - name: rentalservice
+          image: charroux/rentalservice:1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: rentalservice
+  name: rentalservice
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+      name: http
+  selector:
+    app: rentalservice
+  type: LoadBalancer
+status:
+  loadBalancer: {}
