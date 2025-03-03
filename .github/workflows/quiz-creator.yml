@@ -29,6 +29,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
+          context: ./backend/quiz-creator
           file: ./backend/quiz-creator/Dockerfile
           push: true
           tags: ghcr.io/kapuut-quiz-creator:latest
