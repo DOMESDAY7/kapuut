@@ -1,0 +1,35 @@
+apiVersion: 
+kind: Gateway
+metadata:
+  name: kapuut-microservice-gateway
+spec:
+  selector:
+    istio: 
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kapuut-microservice-virtualservice
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - kapuut-microservice-virtualservice
+  http:
+    - match:
+        - uri:
+            prefix: /rentalservice/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            port:
+              number: 80
+            host: rentalservice.default.svc.cluster.local
