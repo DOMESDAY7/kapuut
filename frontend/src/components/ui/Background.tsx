@@ -31,7 +31,7 @@ export default function Background() {
         this.x = Math.random() * canvasElement.width;
         this.y = canvasElement.height + Math.random() * 100;
         this.size = Math.random() * 5 + 2;
-        this.speedY = Math.random() * 3 + 1;
+        this.speedY = (Math.random() * 3 + 1)/7;
         this.opacity = Math.random() * 0.5 + 0.2;
         this.color = `rgba(255, 255, 255, ${this.opacity})`;
         this.shadowBlur = Math.random() * 100;
@@ -42,7 +42,7 @@ export default function Background() {
         if (this.y < -this.size) {
           this.y = canvasElement.height + this.size;
           this.x = Math.random() * canvasElement.width;
-          this.speedY = Math.random() * 3 + 1;
+          this.speedY = (Math.random() * 3 + 1)/7;
           this.size = Math.random() * 5 + 2;
           this.opacity = Math.random() * 0.5 + 0.2;
           this.color = `rgba(255, 255, 255, ${this.opacity})`;
