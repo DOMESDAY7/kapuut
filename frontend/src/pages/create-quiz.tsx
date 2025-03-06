@@ -116,12 +116,12 @@ export default function CreateQuizPage() {
         <div className="w-svw flex flex-col items-center mt-5 gap-5">
             <H1>Create your quiz !</H1>
 
-            <div className="flex flex-col  items-center gap-y-5 w-full">
+            <div className="flex flex-col items-center gap-y-5 w-1/2">
                 {
                     questions?.map((question) => (
                         <div
                             key={question.questionId}
-                            className="flex flex-col justify-center border-2 border-accent backdrop-blur-sm rounded-2xl p-5 gap-y-5 w-1/2 relative">
+                            className="flex flex-col justify-center border-2 border-accent backdrop-blur-sm rounded-2xl p-5 gap-y-5  w-full relative">
                             <div className="absolute -top-2 -right-2 rounded-full cursor-pointer hover:text-accent hover:bg-destructive text-destructive bg-accent transition-all border border-accent" onClick={() => deleteQuestion()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -143,8 +143,8 @@ export default function CreateQuizPage() {
                         </div>
                     ))
                 }
-                <Button onClick={() => addQuestion()}>Add question</Button>
-                <Button onClick={() => handleCreateQuiz()}>Create the quiz</Button>
+                <Button onClick={() => addQuestion()} className="w-full">Add question</Button>
+                <Button onClick={() => handleCreateQuiz()} className="w-full">Create the quiz</Button>
             </div>
 
 
