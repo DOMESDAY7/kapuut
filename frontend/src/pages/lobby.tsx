@@ -66,7 +66,7 @@ export default function LobbyPage() {
     ]
 
     return (
-        <div className='flex md:flex-row flex-col items-center justify-center h-svh w-svw gap-x-5 md:divide-x divide-accent'>
+        <div className='flex md:flex-row flex-col items-center justify-center h-svh w-svw gap-x-5 md:divide-x-2 divide-accent'>
 
             <div className='flex flex-col items-center justify-center p-5'>
                 <Canvas
