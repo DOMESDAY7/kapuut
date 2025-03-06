@@ -11,4 +11,27 @@ spec:
     port: 3100
     targetPort: 3100
 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quiz-creator
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      app: quiz-creator
+  template:
+    metadata:
+      labels:
+        app: quiz-creator
+    spec:
+      containers:
+      - name: quiz-creator
+        image: kapuut.quiz-creator 
+        ports:
+        - containerPort: 3100
+        env:
+        - name: ENV_VAR_NAME  # Remplacez par le nom de votre variable d'environnement
+          value: "valeur"      # Remplacez par la valeur de votre variable d'environnement
           
