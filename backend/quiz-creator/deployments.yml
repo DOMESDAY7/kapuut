@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: quiz-creator
 spec:
-  type: NodePort
+  type: ClusterIP 
   selector:
     app: quiz-creator
   ports:
-  - protocol: TCP
-    port: 3100
-    targetPort: 3100
+    - protocol: TCP
+      port: 80  
+      targetPort: 3100  
 
 ---
 apiVersion: apps/v1
@@ -31,7 +31,3 @@ spec:
         image: kapuut.quiz-creator 
         ports:
         - containerPort: 3100
-        env:
-        - name: ENV_VAR_NAME  # Remplacez par le nom de votre variable d'environnement
-          value: "valeur"      # Remplacez par la valeur de votre variable d'environnement
-          
