@@ -28,3 +28,10 @@ run rust backend : cargo run
 
 ### docker run
 ```docker run -p 3100:3100 --name kapuut.quiz-creator kapuut.quiz-creator ```
+
+### Kubernetees
+
+In order to test the isitio gateway use the port forwarding
+```
+kubectl port-forward -n istio-system svc/istio-ingressgateway 8080:80
+```

@@ -3,3 +3,6 @@
 
 # go binary
 main
+
+
+istio-*

@@ -28,6 +28,8 @@ spec:
     spec:
       containers:
       - name: quiz-creator
-        image: kapuut.quiz-creator 
+        image: ghcr.io/domesday7/kapuut.quiz-creator:latest
         ports:
         - containerPort: 3100
+    imagePullSecrets:
+      - name: ghcr-secret
