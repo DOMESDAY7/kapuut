@@ -6,3 +6,5 @@ main
 
 
 istio-*
+
+secret.yml
