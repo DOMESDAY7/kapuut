@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { APP_NAME } from "@/consts";
 
-export default function Home() {
+export default function HomePage() {
 
     return (
         <div className="h-svh flex flex-col items-center justify-center">

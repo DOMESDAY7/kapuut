@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { avatarList } from "@/consts";
 
-export default function ProfileSetup() {
+export default function ProfileSetupPage() {
 
     return (
         <div className="h-svh flex flex-col gap-5 items-center justify-center">

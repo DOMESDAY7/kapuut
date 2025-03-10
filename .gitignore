@@ -3,3 +3,8 @@
 
 # go binary
 main
+
+
+istio-*
+
+secret.yml

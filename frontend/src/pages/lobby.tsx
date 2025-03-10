@@ -3,7 +3,7 @@ import { avatarList } from '@/consts';
 import { useQRCode } from 'next-qrcode';
 import { useParams } from 'react-router-dom';
 
-export default function Lobby() {
+export default function LobbyPage() {
     const { Canvas } = useQRCode();
 
     let parms = useParams();
@@ -66,7 +66,7 @@ export default function Lobby() {
     ]
 
     return (
-        <div className='flex md:flex-row flex-col items-center justify-center h-svh w-svw gap-x-5 md:divide-x divide-accent'>
+        <div className='flex md:flex-row flex-col items-center justify-center h-svh w-svw gap-x-5 md:divide-x-2 divide-accent'>
 
             <div className='flex flex-col items-center justify-center p-5'>
                 <Canvas

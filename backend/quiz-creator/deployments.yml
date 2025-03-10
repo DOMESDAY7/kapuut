@@ -3,12 +3,37 @@ kind: Service
 metadata:
   name: quiz-creator
 spec:
-  type: NodePort
+  type: ClusterIP 
   selector:
     app: quiz-creator
   ports:
-  - protocol: TCP
-    port: 3100
-    targetPort: 3100
+    - protocol: TCP
+      port: 3100  
+      targetPort: 3100  
 
-          
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quiz-creator
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      app: quiz-creator
+  template:
+    metadata:
+      labels:
+        app: quiz-creator
+    spec:
+      containers:
+      - name: quiz-creator
+        image: ghcr.io/domesday7/kapuut.quiz-creator:latest
+        ports:
+        - containerPort: 3100
+        envFrom:
+        - secretRef:
+            name: quiz-creator-env
+      imagePullSecrets:
+        - name: ghcr-secret
+    
