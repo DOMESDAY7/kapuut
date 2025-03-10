@@ -35,10 +35,34 @@ In order to test the isitio gateway use the port forwarding
 
 ```
 kubectl port-forward -n istio-system svc/istio-ingressgateway 8080:80
+```
 
-Install istio globally
+apply quiz-creator service
+```
+kubectl apply -f backend/quiz-creator/deployments.yml 
+```
+
+apply deployment.yml
+```
+kubectl apply -f db/deployment.yml 
+```
+
+create secret with .env file
+```
+kubectl create secret generic quiz-creator-env --from-env-file=backend/quiz-creator/.env
+```
+
+#### Install istio globally
+
 ```
 curl -L https://istio.io/downloadIstio | sh -
 cd istio-*
 sudo mv bin/istioctl /usr/local/bin/
+```
+
+### Images
+
+quiz-creator
+```
+https://github.com/DOMESDAY7/kapuut/pkgs/container/kapuut.quiz-creator
 ```
