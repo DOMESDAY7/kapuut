@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: quiz-master
+spec:
+  type: ClusterIP 
+  selector:
+    app: quiz-master
+  ports:
+    - protocol: TCP
+      port: 3000  
+      targetPort: 3000  
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quiz-master
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      app: quiz-master
+  template:
+    metadata:
+      labels:
+        app: quiz-master
+    spec:
+      containers:
+      - name: quiz-master
+        image: ghcr.io/domesday7/kapuut.quiz-master:latest
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - secretRef:
+            name: quiz-master-env
+      imagePullSecrets:
+        - name: ghcr-secret
+    

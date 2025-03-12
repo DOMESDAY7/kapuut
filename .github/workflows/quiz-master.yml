@@ -36,4 +36,4 @@ jobs:
           context: ./backend/quiz-master
           file: ./backend/quiz-master/Dockerfile
           push: true
-          tags: ghcr.io/${{ env.actor }}/kapuut-quiz-master:latest 
+          tags: ghcr.io/${{ env.actor }}/kapuut.quiz-master:latest 
