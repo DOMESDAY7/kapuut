@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: quiz-leaderboard
+spec:
+  type: ClusterIP 
+  selector:
+    app: quiz-leaderboard
+  ports:
+    - protocol: TCP
+      port: 8080  
+      targetPort: 8080  
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quiz-leaderboard
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      app: quiz-leaderboard
+  template:
+    metadata:
+      labels:
+        app: quiz-leaderboard
+    spec:
+      containers:
+      - name: quiz-leaderboard
+        image: ghcr.io/domesday7/kapuut.quiz-leaderboard:latest
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - secretRef:
+            name: quiz-leaderboard-env
+      imagePullSecrets:
+        - name: ghcr-secret
+    
