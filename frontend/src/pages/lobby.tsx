@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 export default function LobbyPage() {
     const { Canvas } = useQRCode();
 
-    let parms = useParams();
+    const parms = useParams();
 
     const players = [
         {

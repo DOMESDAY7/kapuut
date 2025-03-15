@@ -55,28 +55,28 @@ export default function CreateQuizPage() {
         );
     };
 
-    const handleAddAnswerSubmit = () => {
-        if (addingAnswerForQuestionId && newAnswerText.trim()) {
-            addAnswer(addingAnswerForQuestionId, newAnswerText.trim());
-            setAddingAnswerForQuestionId(null);
-            setNewAnswerText('');
-        }
-    };
+    // const handleAddAnswerSubmit = () => {
+    //     if (addingAnswerForQuestionId && newAnswerText.trim()) {
+    //         addAnswer(addingAnswerForQuestionId, newAnswerText.trim());
+    //         setAddingAnswerForQuestionId(null);
+    //         setNewAnswerText('');
+    //     }
+    // };
 
-    const deleteAnswer = (questionId: string, answerId: string) => {
+    // const deleteAnswer = (questionId: string, answerId: string) => {
 
-        setQuestions(prevQuestions =>
-            prevQuestions.map(question => {
-                if (question.questionId === questionId) {
-                    return {
-                        ...question,
-                        answer: question.answer.filter(a => a.answerId !== answerId),
-                    };
-                }
-                return question;
-            })
-        );
-    };
+    //     setQuestions(prevQuestions =>
+    //         prevQuestions.map(question => {
+    //             if (question.questionId === questionId) {
+    //                 return {
+    //                     ...question,
+    //                     answer: question.answer.filter(a => a.answerId !== answerId),
+    //                 };
+    //             }
+    //             return question;
+    //         })
+    //     );
+    // };
 
     const addQuestion = () => {
         setQuestions(prevQuestions => [
