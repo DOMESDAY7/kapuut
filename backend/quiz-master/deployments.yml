@@ -17,7 +17,7 @@ kind: Deployment
 metadata:
   name: quiz-master
 spec:
-  replicas: 3 
+  replicas: 1
   selector:
     matchLabels:
       app: quiz-master

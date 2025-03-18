@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to GitHub Container Registry
+name: Quiz frontend container
 
 on:
   push:
@@ -36,4 +36,4 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: ghcr.io/${{ env.actor }}/kapuut.quiz-frontend:latest 
+          tags: ghcr.io/${{ env.actor }}/kapuut.quiz-frontend:latest
