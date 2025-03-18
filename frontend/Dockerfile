@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 FROM base AS install
 RUN mkdir -p /temp/dev
 COPY package.json bun.lock /temp/dev/
-RUN cd /temp/dev && bun install --frozen-lockfile --production
+RUN cd /temp/dev && bun install --frozen-lockfile
 
 # Étape 3: Copier les dépendances et les fichiers de l'application
 FROM base AS prerelease
