@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kapuut-routes  
+spec:
+  hosts:
+    - "*"  
+  gateways:
+    - microservice-gateway  
+  http:
+    - match:
+        - uri:
+            prefix: /api/quiz/
+      rewrite:
+        uri: /quiz/  
+      route:
+        - destination:
+            port:
+              number: 3100
+            host: quiz-creator.default.svc.cluster.local  
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: quiz-frontend.default.svc.cluster.local  
+            port:
+              number: 8080
+   
+
