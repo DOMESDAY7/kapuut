@@ -16,6 +16,7 @@ func NewQuizService(repo *QuizRepository) *QuizService {
 
 // Validate a quiz
 func (qs *QuizService) VerifyQuiz(q Quiz) error {
+	fmt.Printf("quiz: %v\n", q)
 	if q.Name == "" {
 		return errors.New("quiz name is required")
 	}
@@ -23,7 +24,7 @@ func (qs *QuizService) VerifyQuiz(q Quiz) error {
 		return errors.New("the quiz must have at least one question")
 	}
 	for _, question := range q.Questions {
-		if question.Text == "" {
+		if question.question == "" {
 			return errors.New("each question must have a text")
 		}
 		if len(question.Answers) == 0 {
@@ -31,7 +32,7 @@ func (qs *QuizService) VerifyQuiz(q Quiz) error {
 		}
 		correctAnswerFound := false
 		for _, answer := range question.Answers {
-			if answer.Text == "" {
+			if answer.answer == "" {
 				return errors.New("each answer must have a text")
 			}
 			if answer.IsCorrect {

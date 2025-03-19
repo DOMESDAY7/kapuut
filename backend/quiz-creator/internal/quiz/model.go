@@ -1,13 +1,13 @@
 package quiz
 
 type Answer struct {
-	Text      string `json:"text"`
+	answer    string `json:"answer"`
 	IsCorrect bool   `json:"is_correct"`
 }
 
 type Question struct {
-	Text    string   `json:"text"`
-	Answers []Answer `json:"answers"`
+	question string   `json:"question"`
+	Answers  []Answer `json:"answers"`
 }
 
 type Quiz struct {

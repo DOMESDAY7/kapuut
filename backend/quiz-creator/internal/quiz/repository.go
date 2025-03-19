@@ -43,7 +43,7 @@ func (qr *QuizRepository) SaveQuiz(q Quiz) error {
 		questionId := cuid.New()
 
 		// Insert into the Questions table with the foreign key quizId
-		_, err := tx.Exec(`INSERT INTO "Questions" ("questionId", "question", "quizId") VALUES ($1, $2, $3)`, questionId, question.Text, quizId)
+		_, err := tx.Exec(`INSERT INTO "Questions" ("questionId", "question", "quizId") VALUES ($1, $2, $3)`, questionId, question.question, quizId)
 		if err != nil {
 			tx.Rollback()
 			return err
@@ -54,7 +54,7 @@ func (qr *QuizRepository) SaveQuiz(q Quiz) error {
 			answerId := cuid.New()
 
 			// Insert into the Answers table with the foreign key questionId
-			_, err := tx.Exec(`INSERT INTO "Answers" ("answerId", "answer", "isCorrect", "questionId") VALUES ($1, $2, $3, $4)`, answerId, answer.Text, answer.IsCorrect, questionId)
+			_, err := tx.Exec(`INSERT INTO "Answers" ("answerId", "answer", "isCorrect", "questionId") VALUES ($1, $2, $3, $4)`, answerId, answer.answer, answer.IsCorrect, questionId)
 			if err != nil {
 				tx.Rollback()
 				return err
