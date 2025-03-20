@@ -244,9 +244,8 @@ export default function CreateQuizPage() {
                 name: quizTitle,
                 questions: questions
             };
-            console.log(quizData);
-            console.log(`${baseUrlAPI}/quizzes`)
-            const response = await fetch(`${baseUrlAPI}/quiz`, {
+            
+            const response = await fetch(`${baseUrlAPI}/api/quiz`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
