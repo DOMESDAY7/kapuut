@@ -1,4 +1,4 @@
 export const APP_NAME = "kapuut";
 export const avatarList =
     ["🥸", "😍", "🤩", "🤑", "🥳"]
-export const baseUrlAPI = "http://localhost:3001"
+export const baseUrlAPI = import.meta.env.VITE_API_URL;
