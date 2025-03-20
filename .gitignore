@@ -7,4 +7,5 @@ main
 
 istio-*
 
-secret.yml
+*-secret.yml
+env-*

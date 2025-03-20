@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: quiz-db
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: quiz-db
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quiz-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quiz-db
+  template:
+    metadata:
+      labels:
+        app: quiz-db
+    spec:
+      containers:
+      - name: quiz-db
+        image: ghcr.io/domesday7/kapuut.quiz-db:latest
+        ports:
+        - containerPort: 5432
+      imagePullSecrets:
+      - name: ghcr-secret

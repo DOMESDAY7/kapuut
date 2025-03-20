@@ -31,9 +31,12 @@ spec:
         image: ghcr.io/domesday7/kapuut.quiz-frontend:latest
         ports:
         - containerPort: 8080
-        envFrom:
-        - secretRef:
-            name: quiz-frontend-env
+        env:
+        - name: VITE_API_URL
+          valueFrom:
+            secretKeyRef:
+              name: env-secret
+              key: ISTIO_URL
       imagePullSecrets:
         - name: ghcr-secret
     

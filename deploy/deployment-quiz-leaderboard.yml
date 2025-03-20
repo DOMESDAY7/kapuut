@@ -31,9 +31,12 @@ spec:
         image: ghcr.io/domesday7/kapuut.quiz-leaderboard:latest
         ports:
         - containerPort: 8080
-        envFrom:
-        - secretRef:
-            name: quiz-leaderboard-env
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: env-secret
+              key: DATABASE_URL
       imagePullSecrets:
         - name: ghcr-secret
     
