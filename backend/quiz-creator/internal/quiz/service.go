@@ -22,8 +22,9 @@ func (qs *QuizService) VerifyQuiz(q Quiz) error {
 	if len(q.Questions) == 0 {
 		return errors.New("the quiz must have at least one question")
 	}
+	fmt.Println(q)
 	for _, question := range q.Questions {
-		if question.Text == "" {
+		if question.Question == "" {
 			return errors.New("each question must have a text")
 		}
 		if len(question.Answers) == 0 {
@@ -31,7 +32,7 @@ func (qs *QuizService) VerifyQuiz(q Quiz) error {
 		}
 		correctAnswerFound := false
 		for _, answer := range question.Answers {
-			if answer.Text == "" {
+			if answer.Answer == "" {
 				return errors.New("each answer must have a text")
 			}
 			if answer.IsCorrect {
