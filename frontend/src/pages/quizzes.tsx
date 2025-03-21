@@ -20,7 +20,7 @@ export default function QuizList() {
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
-                const resGetQuizzes = await fetch(`http://localhost:3100/quiz`, {
+                const resGetQuizzes = await fetch(`${baseUrlAPI}/api/quiz`, {
                     headers: {
                         'Content-Type': 'application/json',
                     }
