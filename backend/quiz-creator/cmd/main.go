@@ -49,8 +49,19 @@ func main() {
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Quiz creation service")
+	app.Get("/quiz", func(c *fiber.Ctx) error {
+
+		quizzes, err := quizService.HandleGetAllQuizzes()
+
+		if err != nil {
+			// show the error in log
+			fmt.Println("Error getting the quizzes:", err)
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Failed to get quizzes",
+			})
+		}
+
+		return c.JSON(quizzes)
 	})
 
 	app.Post("/quiz", func(c *fiber.Ctx) error {

@@ -244,7 +244,7 @@ export default function CreateQuizPage() {
                 name: quizTitle,
                 questions: questions
             };
-            
+
             const response = await fetch(`${baseUrlAPI}/api/quiz`, {
                 method: "POST",
                 headers: {
@@ -255,15 +255,14 @@ export default function CreateQuizPage() {
 
             const data = await response.json();
 
-            if (data.success) {
-                alert('Quiz créé avec succès !');
-                // Nettoyer les données après envoi réussi
-                localStorage.removeItem(QUIZ_STORAGE_KEY);
-                setQuizTitle('');
-                setQuestions([]);
-            } else {
-                alert(`Erreur lors de la création du quiz: ${data.message || 'Erreur inconnue'}`);
-            }
+
+            alert('Quiz créé avec succès !');
+            // Nettoyer les données après envoi réussi
+            localStorage.removeItem(QUIZ_STORAGE_KEY);
+            setQuizTitle('');
+            setQuestions([]);
+            // redirect to /lobby page
+
         } catch (error) {
             console.error('Erreur lors de la création du quiz:', error);
             alert('Une erreur est survenue lors de la création du quiz');

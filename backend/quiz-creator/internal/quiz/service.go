@@ -46,6 +46,16 @@ func (qs *QuizService) VerifyQuiz(q Quiz) error {
 	return nil
 }
 
+func (qs *QuizService) HandleGetAllQuizzes() ([]Quiz, error) {
+	quizzes, err := qs.repo.GetAllQuizzes()
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to get quizzes: %w", err)
+	}
+
+	return quizzes, nil
+}
+
 // Create a quiz
 func (qs *QuizService) HandleCreateQuiz(q Quiz) error {
 	if err := qs.VerifyQuiz(q); err != nil {

@@ -2,6 +2,7 @@ package quiz
 
 import (
 	"database/sql"
+	"fmt"
 
 	_ "github.com/lib/pq"
 	"github.com/lucsky/cuid"
@@ -15,6 +16,34 @@ type QuizRepository struct {
 // NewQuizRepository returns a new instance of QuizRepository.
 func NewQuizRepository(db *sql.DB) *QuizRepository {
 	return &QuizRepository{db: db}
+}
+
+func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
+	// Exécution de la requête
+	rows, err := qr.db.Query("SELECT quizId, quiz FROM Quizzes")
+	if err != nil {
+		return nil, fmt.Errorf("failed to query quizzes: %w", err)
+	}
+	defer rows.Close()
+
+	var quizzes []Quiz
+	// Parcours des lignes
+	for rows.Next() {
+		var quiz Quiz
+		// Extraction des données de chaque ligne
+		if err := rows.Scan(&quiz.QuizId, &quiz.Name); err != nil {
+			return nil, fmt.Errorf("failed to scan row: %w", err)
+		}
+		// Ajout du quiz au tableau
+		quizzes = append(quizzes, quiz)
+	}
+
+	// Vérifie si une erreur s'est produite pendant l'itération
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating rows: %w", err)
+	}
+
+	return quizzes, nil
 }
 
 // SaveQuiz saves a quiz, its questions, and their answers in the database.
