@@ -40,9 +40,9 @@ export default function QuizList() {
     }, []);
 
     // Filtrer les quiz selon le terme de recherche
-    const filteredQuizzes = quizzes.filter(quiz =>
+    const filteredQuizzes = quizzes?.filter(quiz =>
         quiz.quiz.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ) ?? [];
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);

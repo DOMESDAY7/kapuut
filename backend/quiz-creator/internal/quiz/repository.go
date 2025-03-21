@@ -20,7 +20,7 @@ func NewQuizRepository(db *sql.DB) *QuizRepository {
 
 func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
 	// Exécution de la requête
-	rows, err := qr.db.Query("SELECT quizId, quiz FROM Quizzes")
+	rows, err := qr.db.Query("SELECT \"quizId\", \"quiz\" FROM \"Quizzes\"")
 	if err != nil {
 		return nil, fmt.Errorf("failed to query quizzes: %w", err)
 	}
