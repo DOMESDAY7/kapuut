@@ -3,6 +3,7 @@ package quiz
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/lib/pq"
 	"github.com/lucsky/cuid"
@@ -17,83 +18,64 @@ type QuizRepository struct {
 func NewQuizRepository(db *sql.DB) *QuizRepository {
 	return &QuizRepository{db: db}
 }
-
-func (qr *QuizRepository) GetAllQuizzes() ([]map[string]interface{}, error) {
-	// Exécution de la requête pour récupérer les quizzes
-	rows, err := qr.db.Query(`SELECT "quizId", "quiz" FROM "Quizzes"`)
+func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
+	// Requête avec jointure pour récupérer les quizzes et leurs questions en une seule fois
+	rows, err := qr.db.Query(`
+		SELECT q."quizId", q."quiz", que."questionId", que."question"
+		FROM "Quizzes" q
+		LEFT JOIN "Questions" que ON q."quizId" = que."quizId"
+		ORDER BY q."quizId", que."questionId"
+	`)
 	if err != nil {
-		return nil, fmt.Errorf("failed to query quizzes: %w", err)
+		return nil, fmt.Errorf("failed to query quizzes and questions: %w", err)
 	}
 	defer rows.Close()
 
-	var quizzes []map[string]interface{}
+	quizzes := []Quiz{}
+	quizMap := make(map[string]*Quiz)
+
 	// Parcours des lignes
 	for rows.Next() {
 		var quizId, quiz string
+		var questionId, question sql.NullString
+
 		// Extraction des données de chaque ligne
-		if err := rows.Scan(&quizId, &quiz); err != nil {
+		if err := rows.Scan(&quizId, &quiz, &questionId, &question); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
 
-		// Récupérer les questions associées à ce quiz
-		questions, err := qr.getQuestionsForQuiz(quizId)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get questions for quiz %s: %w", quizId, err)
+		// Vérifier si nous avons déjà traité ce quiz
+		_, exists := quizMap[quizId]
+		if !exists {
+			// Création d'un nouveau quiz
+			newQuiz := Quiz{
+				QuizId:    quizId,
+				Name:      quiz,
+				Questions: []Question{},
+			}
+			quizzes = append(quizzes, newQuiz)
+			quizMap[quizId] = &quizzes[len(quizzes)-1]
+			_ = &newQuiz
 		}
 
-		// Création d'un objet pour ce quiz avec les questions associées
-		quizData := map[string]interface{}{
-			"quizId":    quizId,
-			"quiz":      quiz,
-			"questions": questions,
+		// Ajouter la question au quiz si elle existe
+		if questionId.Valid && question.Valid {
+			questionData := Question{
+				QuestionId: questionId.String,
+				Question:   question.String,
+				QuizId:     quizId,
+			}
+			quizMap[quizId].Questions = append(quizMap[quizId].Questions, questionData)
 		}
-
-		// Ajout du quiz avec les questions au tableau
-		quizzes = append(quizzes, quizData)
 	}
 
 	// Vérifie si une erreur s'est produite pendant l'itération
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("error iterating rows: %w", err)
 	}
+	log.Print("Get quiz from db: ", quizzes)
 
 	return quizzes, nil
-}
-
-// Fonction auxiliaire pour récupérer les questions associées à un quiz
-func (qr *QuizRepository) getQuestionsForQuiz(quizId string) ([]map[string]interface{}, error) {
-	// Exécution de la requête pour récupérer les questions liées à un quiz
-	rows, err := qr.db.Query(`SELECT "questionId", "question" FROM "Questions" WHERE "quizId" = $1`, quizId)
-	if err != nil {
-		return nil, fmt.Errorf("failed to query questions: %w", err)
-	}
-	defer rows.Close()
-
-	var questions []map[string]interface{}
-	// Parcours des lignes des questions
-	for rows.Next() {
-		var questionId, question string
-		// Extraction des données de chaque ligne
-		if err := rows.Scan(&questionId, &question); err != nil {
-			return nil, fmt.Errorf("failed to scan question row: %w", err)
-		}
-
-		// Création d'un objet pour la question
-		questionData := map[string]interface{}{
-			"questionId": questionId,
-			"question":   question,
-		}
-
-		// Ajout de la question au tableau
-		questions = append(questions, questionData)
-	}
-
-	// Vérifie si une erreur s'est produite pendant l'itération
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("error iterating question rows: %w", err)
-	}
-
-	return questions, nil
 }
 
 // SaveQuiz saves a quiz, its questions, and their answers in the database.

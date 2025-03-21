@@ -8,6 +8,7 @@ type Answer struct {
 }
 
 type Question struct {
+	QuizId     string   `json:"quizId"`
 	QuestionId string   `json:"questionId"`
 	Question   string   `json:"question"`
 	Answers    []Answer `json:"answer"`
