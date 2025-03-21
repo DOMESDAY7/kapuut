@@ -50,7 +50,7 @@ func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
 			// Création d'un nouveau quiz
 			newQuiz := Quiz{
 				QuizId:    quizId,
-				Name:      quiz,
+				Quiz:      quiz,
 				Questions: []Question{},
 			}
 			quizzes = append(quizzes, newQuiz)
@@ -93,7 +93,7 @@ func (qr *QuizRepository) SaveQuiz(q Quiz) error {
 	quizId := cuid.New()
 
 	// Insert into the quizzes table
-	_, err = tx.Exec(`INSERT INTO "Quizzes" ("quizId", "quiz") VALUES ($1, $2)`, quizId, q.Name)
+	_, err = tx.Exec(`INSERT INTO "Quizzes" ("quizId", "quiz") VALUES ($1, $2)`, quizId, q.Quiz)
 	if err != nil {
 		tx.Rollback()
 		return err

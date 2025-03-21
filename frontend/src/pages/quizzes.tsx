@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { baseUrlAPI } from '@/consts';
 import { Questions } from '@/types/model';
+import { cn } from '@/lib/utils';
 
 type QuizDisplay = {
     quizId: string;
@@ -19,7 +20,7 @@ export default function QuizList() {
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
-                const resGetQuizzes = await fetch(`${baseUrlAPI}/api/quiz`, {
+                const resGetQuizzes = await fetch(`http://localhost:3100/quiz`, {
                     headers: {
                         'Content-Type': 'application/json',
                     }
@@ -46,7 +47,7 @@ export default function QuizList() {
 
     return (
         <div className="w-full flex flex-col items-center mt-5 gap-5 pb-16 text-accent">
-            <h1 className="text-3xl font-bold">Explorez les quiz</h1>
+            <h1 className="text-3xl font-bold">Browse all quiz</h1>
 
             <div className="flex flex-col items-center gap-y-5 w-full max-w-4xl px-4">
                 <div className="flex w-full gap-4">
@@ -69,16 +70,15 @@ export default function QuizList() {
 
                 <div className="flex justify-between w-full">
                     <h2 className="text-xl font-medium">
-                        {isLoading ? 'Chargement...' : `${filteredQuizzes.length} quiz disponibles`}
+                        {isLoading ? 'Chargement...' : `${filteredQuizzes.length} quiz available`}
                     </h2>
                     <Button
-                        className="bg-accent hover:bg-accent/80"
                         onClick={() => window.location.href = '/create-quiz'}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
-                        Créer un quiz
+                        Create a quiz
                     </Button>
                 </div>
 
@@ -111,8 +111,8 @@ export default function QuizList() {
                                         </p>
                                     </div>
                                 </CardContent>
-                                <CardFooter className="flex justify-between gap-2">
-                                    <Button
+                                <CardFooter className="flex gap-2">
+                                    {/* <Button
                                         variant="outline"
                                         className="flex-1"
                                         onClick={() => window.location.href = `/quiz/${quiz.quizId}/edit`}
@@ -120,17 +120,17 @@ export default function QuizList() {
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                                         </svg>
-                                        Modifier
-                                    </Button>
-                                    <Button
-                                        className="flex-1 bg-green-600 hover:bg-green-700"
-                                        onClick={() => window.location.href = `/quiz/${quiz.quizId}`}
+                                        Edit
+                                    </Button> */}
+                                    <a
+                                        className={cn(buttonVariants({ variant: "default" }), "flex-1 bg-green-600 hover:bg-green-700")}
+                                        href={`/quiz/${quiz.quizId}`}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 0 1 0 1.971l-11.54 6.347a1.125 1.125 0 0 1-1.667-.985V5.653Z" />
                                         </svg>
-                                        Jouer
-                                    </Button>
+                                        Play
+                                    </a>
                                 </CardFooter>
                             </Card>
                         ))}

@@ -20,7 +20,7 @@ const buttonVariants = cva(
           hover:bg-destructive/90`,
 
         outline: `
-          border border-input bg-background/30 backdrop-blur-md
+          border-2 border-input bg-background/30 backdrop-blur-md
           shadow-[0_7px_var(--muted-shadow)] 
           active:translate-y-0.5 active:shadow-[0_5px_var(--muted-shadow)] 
           hover:bg-accent/50 hover:text-accent-foreground`,

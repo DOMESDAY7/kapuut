@@ -16,7 +16,7 @@ func NewQuizService(repo *QuizRepository) *QuizService {
 
 // Validate a quiz
 func (qs *QuizService) VerifyQuiz(q Quiz) error {
-	if q.Name == "" {
+	if q.Quiz == "" {
 		return errors.New("quiz name is required")
 	}
 	if len(q.Questions) == 0 {
