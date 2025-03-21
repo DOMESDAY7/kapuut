@@ -27,7 +27,7 @@ export default function QuizList() {
 
                 const dataGetQuizzes = await resGetQuizzes.json();
 
-                setQuizzes(dataGetQuizzes);
+                setQuizzes(dataGetQuizzes ?? []);
                 setIsLoading(false);
 
             } catch (error) {
@@ -41,7 +41,7 @@ export default function QuizList() {
 
     // Filtrer les quiz selon le terme de recherche
     const filteredQuizzes = quizzes.filter(quiz =>
-        quiz.quiz.toLowerCase().includes(searchTerm.toLowerCase())
+        quiz?.quiz?.toLowerCase()?.includes(searchTerm.toLowerCase())
     ) ?? [];
 
     const formatDate = (dateString: string) => {
