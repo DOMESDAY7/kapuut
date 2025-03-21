@@ -33,10 +33,10 @@ export async function gameManager(
         try {
             const obj: CreateWsMessage = JSON.parse(message.toString());
             const lobby = await createLobby(obj.quizId);
-            ws.send(`< Lobby created! lobbyCode : ${lobby.lobbyCode} >`);
+            ws.send(JSON.stringify({ lobbyCode: lobby.lobbyCode }));
         } catch (error) {
             console.error("Error parsing message:", error);
-            ws.send(`< invalid JSON format : ${message} >`);
+            ws.send(JSON.stringify({ error: `invalid JSON format : ${message}` }));
         }
     }
 
@@ -46,10 +46,18 @@ export async function gameManager(
             const obj: ConnectWsMessage = JSON.parse(message.toString());
             const player = await createPlayer(obj.playerName, obj.lobbyCode);
             serve.addClient(ws, player.playerId, player.lobbyId);
-            ws.send(`< ${player.name} connected! playerId : ${player.playerId} >`);
+            ws.send(JSON.stringify({
+                type: WsMessageType.connect,
+                newPlayer: {
+                    playerId: player.playerId,
+                    playerName: obj.playerName,
+                    lobbyCode: obj.lobbyCode,
+                }
+            }));
+
         } catch (error) {
             console.error("Error parsing message:", error);
-            ws.send(`< invalid JSON format : ${message} >`);
+            ws.send(JSON.stringify({ error: `invalid JSON format : ${message}` }));
         }
     }
 
@@ -75,7 +83,7 @@ export async function gameManager(
             );
         } catch (error) {
             console.error("Error parsing message:", error);
-            ws.send(`< invalid JSON format : ${message} >`);
+            ws.send(JSON.stringify({ error: `invalid JSON format : ${message}` }));
         }
     }
 
@@ -89,7 +97,7 @@ export async function gameManager(
                 await nextQuestion(obj.lobbyCode);
         } catch (error) {
             console.error("Error parsing message:", error);
-            ws.send(`< invalid JSON format : ${message} >`);
+            ws.send(JSON.stringify({ error: `invalid JSON format : ${message}` }));
         }
     }
 
@@ -107,7 +115,7 @@ export async function gameManager(
             serve.deleteLobby(lobby.lobbyId);
         } catch (error) {
             console.error("Error parsing message:", error);
-            ws.send(`< invalid JSON format : ${message} >`);
+            ws.send(JSON.stringify({ error: `invalid JSON format : ${message}` }));
         }
     }
 }

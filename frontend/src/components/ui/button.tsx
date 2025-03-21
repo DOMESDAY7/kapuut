@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: `
-          text-white bg-primary/30 px-4 py-2 text-base 
+          text-accent bg-primary/30 px-4 py-2 text-base 
           cursor-pointer`,
 
         destructive: `
@@ -23,7 +23,7 @@ const buttonVariants = cva(
           border-2 border-input bg-background/30 backdrop-blur-md
           shadow-[0_7px_var(--muted-shadow)] 
           active:translate-y-0.5 active:shadow-[0_5px_var(--muted-shadow)] 
-          hover:bg-accent/50 hover:text-accent-foreground`,
+          hover:bg-accent/50 hover:text-accent-foreground text-accent`,
 
         secondary: `
           text-secondary-foreground bg-secondary/30 backdrop-blur-md

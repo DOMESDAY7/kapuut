@@ -44,7 +44,34 @@ export default function QuizList() {
         quiz?.quiz?.toLowerCase()?.includes(searchTerm.toLowerCase())
     ) ?? [];
 
+    const handleCreateLobby = (quizId: string) => {
+        try{
+            const ws = new WebSocket('ws://localhost:3000');
+        
+            ws.onopen = () => {
+                
+                // Envoyer un message pour créer un lobby
+                ws.send(JSON.stringify({
+                    type: 'create',
+                    date: new Date(),
+                    quizId: quizId
+                }));
+            };
+            
+            ws.onmessage = (event) => {
+                
+               // redirect to lobby page
+                const data = JSON.parse(event.data);
+                if(data.lobbyCode){
+                    window.location.href = `/lobby/${data.lobbyCode}`;
+                }else{
+                    console.error("Invalid lobby code:", data);
+                }
+            };
+        }catch(e){
 
+        }
+    }
     return (
         <div className="w-full flex flex-col items-center mt-5 gap-5 pb-16 text-accent">
             <h1 className="text-3xl font-bold">Browse all quiz</h1>
@@ -122,15 +149,15 @@ export default function QuizList() {
                                         </svg>
                                         Edit
                                     </Button> */}
-                                    <a
+                                    <Button
                                         className={cn(buttonVariants({ variant: "default" }), "flex-1 bg-green-600 hover:bg-green-700")}
-                                        href={`/quiz/${quiz.quizId}`}
+                                        onClick={() => handleCreateLobby(quiz.quizId)}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 0 1 0 1.971l-11.54 6.347a1.125 1.125 0 0 1-1.667-.985V5.653Z" />
                                         </svg>
                                         Play
-                                    </a>
+                                    </Button>
                                 </CardFooter>
                             </Card>
                         ))}

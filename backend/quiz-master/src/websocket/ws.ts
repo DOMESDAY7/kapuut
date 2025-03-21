@@ -32,11 +32,11 @@ export class WebSocketServer {
             },
             websocket: {
                 message: (ws, message) => {
-                    ws.send("< message received >");
+                    ws.send(JSON.stringify({status: "message received"}));
                     handlerMessage(ws, message);
                 },
                 open: (ws) => {
-                    ws.send("< socket opened >");
+                    ws.send(JSON.stringify({status: "connected"}));
                     handlerOpen(ws);
                 },
                 close: (ws, code, message) => {

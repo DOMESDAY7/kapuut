@@ -22,11 +22,11 @@ export default function HomePage() {
                     </div>
                     <div className="flex items-center justify-center gap-x-3 w-full py-2">
                         <div className="flex-1 border-t border-white" />
-                        <p className="text-white">Ou</p>
+                        <p className="text-white">Or</p>
                         <div className="flex-1 border-t border-white" />
                     </div>
                 </div>
-                <Button variant="default" size="default" className="w-full">Créer un questionnaire</Button>
+                <Button variant="default" size="default" className="w-full">Create a quiz !</Button>
             </div>
         </div>
     )
