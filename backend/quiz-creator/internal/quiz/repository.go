@@ -18,24 +18,38 @@ func NewQuizRepository(db *sql.DB) *QuizRepository {
 	return &QuizRepository{db: db}
 }
 
-func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
-	// Exécution de la requête
-	rows, err := qr.db.Query("SELECT \"quizId\", \"quiz\" FROM \"Quizzes\"")
+func (qr *QuizRepository) GetAllQuizzes() ([]map[string]interface{}, error) {
+	// Exécution de la requête pour récupérer les quizzes
+	rows, err := qr.db.Query(`SELECT "quizId", "quiz" FROM "Quizzes"`)
 	if err != nil {
 		return nil, fmt.Errorf("failed to query quizzes: %w", err)
 	}
 	defer rows.Close()
 
-	var quizzes []Quiz
+	var quizzes []map[string]interface{}
 	// Parcours des lignes
 	for rows.Next() {
-		var quiz Quiz
+		var quizId, quiz string
 		// Extraction des données de chaque ligne
-		if err := rows.Scan(&quiz.QuizId, &quiz.Name); err != nil {
+		if err := rows.Scan(&quizId, &quiz); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
-		// Ajout du quiz au tableau
-		quizzes = append(quizzes, quiz)
+
+		// Récupérer les questions associées à ce quiz
+		questions, err := qr.getQuestionsForQuiz(quizId)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get questions for quiz %s: %w", quizId, err)
+		}
+
+		// Création d'un objet pour ce quiz avec les questions associées
+		quizData := map[string]interface{}{
+			"quizId":    quizId,
+			"quiz":      quiz,
+			"questions": questions,
+		}
+
+		// Ajout du quiz avec les questions au tableau
+		quizzes = append(quizzes, quizData)
 	}
 
 	// Vérifie si une erreur s'est produite pendant l'itération
@@ -44,6 +58,42 @@ func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
 	}
 
 	return quizzes, nil
+}
+
+// Fonction auxiliaire pour récupérer les questions associées à un quiz
+func (qr *QuizRepository) getQuestionsForQuiz(quizId string) ([]map[string]interface{}, error) {
+	// Exécution de la requête pour récupérer les questions liées à un quiz
+	rows, err := qr.db.Query(`SELECT "questionId", "question" FROM "Questions" WHERE "quizId" = $1`, quizId)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query questions: %w", err)
+	}
+	defer rows.Close()
+
+	var questions []map[string]interface{}
+	// Parcours des lignes des questions
+	for rows.Next() {
+		var questionId, question string
+		// Extraction des données de chaque ligne
+		if err := rows.Scan(&questionId, &question); err != nil {
+			return nil, fmt.Errorf("failed to scan question row: %w", err)
+		}
+
+		// Création d'un objet pour la question
+		questionData := map[string]interface{}{
+			"questionId": questionId,
+			"question":   question,
+		}
+
+		// Ajout de la question au tableau
+		questions = append(questions, questionData)
+	}
+
+	// Vérifie si une erreur s'est produite pendant l'itération
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating question rows: %w", err)
+	}
+
+	return questions, nil
 }
 
 // SaveQuiz saves a quiz, its questions, and their answers in the database.

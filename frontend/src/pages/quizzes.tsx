@@ -26,7 +26,6 @@ export default function QuizList() {
                 })
 
                 const dataGetQuizzes = await resGetQuizzes.json();
-
                 setQuizzes(dataGetQuizzes ?? []);
                 setIsLoading(false);
 
@@ -44,14 +43,6 @@ export default function QuizList() {
         quiz?.quiz?.toLowerCase()?.includes(searchTerm.toLowerCase())
     ) ?? [];
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return new Intl.DateTimeFormat('fr-FR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        }).format(date);
-    };
 
     return (
         <div className="w-full flex flex-col items-center mt-5 gap-5 pb-16 text-accent">
