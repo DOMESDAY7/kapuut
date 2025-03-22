@@ -55,12 +55,12 @@ export const WebSocketProvider: React.FC<{ lobbyCode: string, children: React.Re
         if (ws && ws.readyState === WebSocket.OPEN) {
             console.log("Sending message", msg);
             
-            // Vérifier si le message est déjà une chaîne JSON
+            // Check if the message is already a JSON string
             if (typeof msg === 'string') {
-                // Le message est déjà une chaîne, l'envoyer tel quel
+                // The message is already a string, send it as is
                 ws.send(msg);
             } else {
-                // Le message est un objet, le convertir en chaîne JSON
+                // The message is an object, convert it to a JSON string
                 ws.send(JSON.stringify(msg));
             }
         }
