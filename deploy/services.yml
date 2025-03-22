@@ -6,12 +6,12 @@ spec:
   selector:
     istio: ingressgateway
   servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
-    hosts:
-    - "*"
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -36,9 +36,7 @@ spec:
 
     - match:
       - uri:
-          prefix: /ws
-      rewrite:
-        uri: /
+          prefix: /socket
       route:
         - destination:
             port:
@@ -49,7 +47,7 @@ spec:
               set:
                 Upgrade: websocket
                 Connection: Upgrade
-    
+
     - match:
         - uri:
             prefix: /api/leaderboard

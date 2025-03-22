@@ -13,7 +13,7 @@ const WebSocketContext = createContext<WebSocketContextProps>({
     lastMessage: null,
 });
 
-const wsURL = import.meta.env.VITE_WS_URL ?? `ws://${baseUrlAPI}/ws`;
+const wsURL = import.meta.env.VITE_WS_URL ?? `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/socket`;
 
 export const WebSocketProvider: React.FC<{ lobbyCode: string, children: React.ReactNode }> = ({ lobbyCode, children }) => {
     const [ws, setWs] = useState<WebSocket | null>(null);
