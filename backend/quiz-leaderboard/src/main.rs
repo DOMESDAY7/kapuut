@@ -3,6 +3,7 @@ use serde::Serialize;
 use std::env;
 use dotenvy::dotenv;
 use tokio_postgres::{NoTls, Error};
+use actix_cors::Cors;
 
 #[derive(Debug, Serialize)]
 struct Leaderboard {
@@ -75,7 +76,15 @@ async fn get_leaderboard(lobby_code: web::Path<String>) -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
-        App::new().service(get_leaderboard)
+        let cors = Cors::default()
+            .allow_any_origin()
+            .allow_any_method()
+            .allow_any_header()
+            .max_age(3600);
+
+       App::new()
+            .wrap(cors)
+            .service(get_leaderboard)
     })
     .bind(("127.0.0.1", 8080))?
     .run()

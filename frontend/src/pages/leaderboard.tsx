@@ -32,6 +32,7 @@ export default function LeaderboardPage() {
                 // Appel à l'API du service de leaderboard
                 const response = await fetch(`http://localhost:8080/leaderboard/${lobbyCode}`);
                 const responseData = await response.json();
+                console.log(responseData);
                 const data = responseData as Player[];
                 
                 // Ajout du rang aux joueurs
