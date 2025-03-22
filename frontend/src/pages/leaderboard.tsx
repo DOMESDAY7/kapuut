@@ -30,22 +30,22 @@ export default function LeaderboardPage() {
                 setLoading(true);
                 setError(null);
                 
-                // Appel à l'API du service de leaderboard
+                // Calling the leaderboard service API
                 const response = await fetch(`${baseUrlAPI}/api/leaderboard/${lobbyCode}`);
                 const responseData = await response.json();
                 console.log(responseData);
                 const data = responseData as Player[];
                 
-                // Ajout du rang aux joueurs
+                // Add rank to players
                 const playersWithRank = data.map((player, index) => ({
                     ...player,
-                    rank: index + 1  // Le rang commence à 1
+                    rank: index + 1  // Rank starts at 1
                 }));
                 
                 setPlayers(playersWithRank);
             } catch (err) {
-                console.error("Erreur lors du chargement du leaderboard:", err);
-                setError("Impossible de charger le classement. Veuillez réessayer plus tard.");
+                console.error("Error loading leaderboard:", err);
+                setError("Unable to load classification. Please try again later.");
             } finally {
                 setLoading(false);
             }
@@ -63,7 +63,7 @@ export default function LeaderboardPage() {
             <Card className="w-full max-w-2xl bg-secondary/30 backdrop-blur-md">
                 <CardHeader className="text-center">
                     <CardTitle>
-                        <H1>Classement Final</H1>
+                        <H1>Final ranking</H1>
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -77,7 +77,7 @@ export default function LeaderboardPage() {
                         </div>
                     ) : players.length === 0 ? (
                         <div className="bg-secondary/50 rounded-lg p-4 text-white text-center">
-                            Aucun joueur trouvé dans ce lobby.
+                            No players found in this lobby.
                         </div>
                     ) : (
                         <div className="space-y-4">
@@ -119,7 +119,7 @@ export default function LeaderboardPage() {
                             onClick={handleReturnToHome}
                             className="bg-accent hover:bg-accent/80 text-black"
                         >
-                            Retour à l'accueil
+                            Back to home page
                         </Button>
                     </div>
                 </CardContent>

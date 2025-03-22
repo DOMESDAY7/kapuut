@@ -67,7 +67,7 @@ export default function CreateQuizPage() {
     const [questions, setQuestions] = useState<Questions[]>([]);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-    // Charger les données du localStorage au chargement du composant
+    // Load localStorage data when component is loaded
     useEffect(() => {
         const savedQuiz = localStorage.getItem(QUIZ_STORAGE_KEY);
         if (savedQuiz) {
@@ -81,7 +81,7 @@ export default function CreateQuizPage() {
         }
     }, []);
 
-    // Sauvegarder dans le localStorage à chaque changement
+    // Save in localStorage each time you change
     useEffect(() => {
         localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify({
             title: quizTitle,
@@ -89,7 +89,7 @@ export default function CreateQuizPage() {
         }));
     }, [quizTitle, questions]);
 
-    // Mise à jour du texte d'une question
+    // Update question text
     const updateQuestionText = (questionId: string, text: string) => {
         setQuestions(prevQuestions =>
             prevQuestions.map(question =>
@@ -100,7 +100,7 @@ export default function CreateQuizPage() {
         );
     };
 
-    // Ajouter une question
+    // Add a question
     const addQuestion = () => {
         setQuestions(prevQuestions => [
             ...prevQuestions,
@@ -112,14 +112,14 @@ export default function CreateQuizPage() {
         ]);
     };
 
-    // Supprimer une question
+    // Delete a question
     const deleteQuestion = (questionId: string) => {
         setQuestions(prevQuestions =>
             prevQuestions.filter(question => question.questionId !== questionId)
         );
     };
 
-    // Ajouter une réponse à une question
+    // Add an answer to a question
     const addAnswer = (questionId: string) => {
         setQuestions(prevQuestions =>
             prevQuestions.map(question => {
@@ -141,7 +141,7 @@ export default function CreateQuizPage() {
         );
     };
 
-    // Mettre à jour le texte d'une réponse
+    // Update answer text
     const updateAnswerText = (questionId: string, answerId: string, text: string) => {
         setQuestions(prevQuestions =>
             prevQuestions.map(question => {
@@ -160,7 +160,7 @@ export default function CreateQuizPage() {
         );
     };
 
-    // Changer l'état correct/incorrect d'une réponse
+    // Change the correct/incorrect state of a response
     const toggleAnswerCorrect = (questionId: string, answerId: string) => {
         setQuestions(prevQuestions =>
             prevQuestions.map(question => {
@@ -179,7 +179,7 @@ export default function CreateQuizPage() {
         );
     };
 
-    // Supprimer une réponse
+    // Delete an answer
     const deleteAnswer = (questionId: string, answerId: string) => {
         setQuestions(prevQuestions =>
             prevQuestions.map(question => {
@@ -194,37 +194,37 @@ export default function CreateQuizPage() {
         );
     };
 
-    // Validation avant envoi
+    // Validation before dispatch
     const validateQuiz = () => {
         if (!quizTitle.trim()) {
-            alert("Veuillez ajouter un titre au quiz");
+            alert("Please add a title to the quiz");
             return false;
         }
 
         if (questions.length === 0) {
-            alert("Ajoutez au moins une question");
+            alert("Add at least one question");
             return false;
         }
 
         for (const question of questions) {
             if (!question.question.trim()) {
-                alert("Toutes les questions doivent avoir un texte");
+                alert("All questions must have a text");
                 return false;
             }
 
             if (question.answer.length < 2) {
-                alert(`La question "${question.question}" doit avoir au moins deux réponses`);
+                alert(`The question “${question.question}” must have at least two answers`);
                 return false;
             }
 
             if (!question.answer.some(ans => ans.isCorrect)) {
-                alert(`La question "${question.question}" doit avoir au moins une réponse correcte`);
+                alert(`The question “${question.question}” must have at least one correct answer`);
                 return false;
             }
 
             for (const answer of question.answer) {
                 if (!answer.answer.trim()) {
-                    alert("Toutes les réponses doivent avoir un texte");
+                    alert("All answers must have a text");
                     return false;
                 }
             }
@@ -264,8 +264,8 @@ export default function CreateQuizPage() {
             // redirect to /lobby page
 
         } catch (error) {
-            console.error('Erreur lors de la création du quiz:', error);
-            alert('Une erreur est survenue lors de la création du quiz');
+            console.error('Error during quiz creation:', error);
+            alert('An error occurred while creating the quiz');
         } finally {
             setIsSubmitting(false);
         }
@@ -285,8 +285,8 @@ export default function CreateQuizPage() {
 
                 {questions.length === 0 ? (
                     <div className="text-center text-accent/70 my-8">
-                        <p>Aucune question pour le moment</p>
-                        <p>Cliquez sur "Ajouter une question" pour commencer</p>
+                        <p>No question for the moment</p>
+                        <p>Click on “Add a question” to begin</p>
                     </div>
                 ) : (
                     questions.map((question, qIndex) => (
@@ -315,7 +315,7 @@ export default function CreateQuizPage() {
 
                             <div className="flex flex-col gap-3">
                                 {question.answer.length === 0 ? (
-                                    <p className="text-center text-accent/70 my-2">Ajoutez des réponses</p>
+                                    <p className="text-center text-accent/70 my-2">Add answers</p>
                                 ) : (
                                     question.answer.map((answer, index) => (
                                         <AnswerButton
@@ -338,7 +338,7 @@ export default function CreateQuizPage() {
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
-                                    Ajouter une réponse
+                                    Add an answer
                                 </Button>
                             </div>
                         </div>
@@ -352,7 +352,7 @@ export default function CreateQuizPage() {
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
-                    Ajouter une question
+                    Add a question
                 </Button>
 
                 <Button
@@ -366,14 +366,14 @@ export default function CreateQuizPage() {
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                            Création en cours...
+                            Creation in progress...
                         </>
                     ) : (
                         <>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
-                            Créer le quiz
+                            Create quiz
                         </>
                     )}
                 </Button>

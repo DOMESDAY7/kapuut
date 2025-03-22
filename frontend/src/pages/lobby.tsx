@@ -160,12 +160,6 @@ function LobbyContent({ id }: { id?: string }) {
             <div className="flex flex-col items-center justify-center h-svh p-4 text-white">
                 <H1>Game Over!</H1>
                 <p className="text-xl mt-4">Thanks for playing</p>
-                <Button
-                    className="mt-8"
-                    onClick={handleReturnToLobby}
-                >
-                    Return to Lobby
-                </Button>
             </div>
         );
     }

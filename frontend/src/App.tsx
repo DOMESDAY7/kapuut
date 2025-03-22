@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/home';
 import AboutPage from './pages/about';
 import LobbyPage from './pages/lobby';
-import ProfileSetupPage from './pages/profile-setup';
 import Background from './components/ui/Background';
 import CreateQuizPage from './pages/create-quiz';
 import QuizList from './pages/quizzes';
@@ -20,7 +19,6 @@ function App() {
           <Route path="/quizzes" element={<QuizList />} />
           <Route path="/lobby/:id" element={<LobbyPage />} />
           <Route path="/create-quiz" element={<CreateQuizPage />} />
-          <Route path="/profile-setup" element={<ProfileSetupPage />} />
           <Route path="/leaderboard/:id" element={<LeaderboardPage />} />
         </Routes>
       </Router>

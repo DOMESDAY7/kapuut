@@ -31,7 +31,7 @@ export default function QuizList() {
                 setIsLoading(false);
 
             } catch (error) {
-                console.error("Erreur lors du chargement des quiz:", error);
+                console.error("Error loading quizzes:", error);
                 setIsLoading(false);
             }
         };
@@ -39,7 +39,7 @@ export default function QuizList() {
         fetchQuizzes();
     }, []);
 
-    // Filtrer les quiz selon le terme de recherche
+    // Filter quizzes by search term
     const filteredQuizzes = quizzes.filter(quiz =>
         quiz?.quiz?.toLowerCase()?.includes(searchTerm.toLowerCase())
     ) ?? [];
@@ -50,7 +50,7 @@ export default function QuizList() {
         
             ws.onopen = () => {
                 
-                // Envoyer un message pour créer un lobby
+                // Send a message to create a lobby
                 ws.send(JSON.stringify({
                     type: 'create',
                     date: new Date(),
@@ -79,7 +79,7 @@ export default function QuizList() {
             <div className="flex flex-col items-center gap-y-5 w-full max-w-4xl px-4">
                 <div className="flex w-full gap-4">
                     <Input
-                        placeholder="Rechercher un quiz..."
+                        placeholder="Search a quiz..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="flex-grow"
@@ -118,8 +118,8 @@ export default function QuizList() {
                     </div>
                 ) : filteredQuizzes.length === 0 ? (
                     <div className="text-center text-accent/70 my-12">
-                        <p>Aucun quiz ne correspond à votre recherche</p>
-                        <p>Essayez avec d'autres termes ou créez votre propre quiz</p>
+                        <p>No quiz matches your search</p>
+                        <p>Experiment with other terms or create your own quiz</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
@@ -139,16 +139,6 @@ export default function QuizList() {
                                     </div>
                                 </CardContent>
                                 <CardFooter className="flex gap-2">
-                                    {/* <Button
-                                        variant="outline"
-                                        className="flex-1"
-                                        onClick={() => window.location.href = `/quiz/${quiz.quizId}/edit`}
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-                                        </svg>
-                                        Edit
-                                    </Button> */}
                                     <Button
                                         className={cn(buttonVariants({ variant: "default" }), "flex-1 bg-green-600 hover:bg-green-700")}
                                         onClick={() => handleCreateLobby(quiz.quizId)}

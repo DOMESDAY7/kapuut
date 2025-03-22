@@ -84,6 +84,7 @@ func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
 // - Questions (columns: questionId, question, quizId)
 // - Answers (columns: answerId, answer, isCorrect, questionId)
 func (qr *QuizRepository) SaveQuiz(q Quiz) error {
+	log.Println("Save quiz to db: ", q)
 	tx, err := qr.db.Begin()
 	if err != nil {
 		return err
