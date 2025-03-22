@@ -241,7 +241,7 @@ export default function CreateQuizPage() {
 
         try {
             const quizData = {
-                name: quizTitle,
+                quiz: quizTitle,
                 questions: questions
             };
 
