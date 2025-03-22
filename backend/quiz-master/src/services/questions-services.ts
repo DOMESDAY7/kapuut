@@ -9,14 +9,14 @@ export const getAllQuestions = async (quizId: string) => {
 };
 
 export const getNQuestion = async (quizId: string, nQuestion: number) => {
-    // Vérifier d'abord combien de questions sont disponibles
+    // First check how many questions are available
     const count = await prisma.questions.count({
         where: {
             quizId,
         },
     });
 
-    // Si nQuestion est supérieur ou égal au nombre de questions, nous avons dépassé la limite
+    // If nQuestion is greater than or equal to the number of questions, we have exceeded the limit.
     if (nQuestion >= count) {
         return {
             question: null,
@@ -24,7 +24,7 @@ export const getNQuestion = async (quizId: string, nQuestion: number) => {
         };
     }
 
-    // Récupérer la question demandée
+    // Retrieve the question
     const question = await prisma.questions.findMany({
         where: {
             quizId,
@@ -33,7 +33,7 @@ export const getNQuestion = async (quizId: string, nQuestion: number) => {
         take: 1,
     });
 
-    // Vérifier si une question a été trouvée
+    // Check if a question has been found
     if (!question || question.length === 0) {
         return {
             question: null,

@@ -203,20 +203,20 @@ async function sendQuestion(
     lobbyId: string
 ): Promise<void> {
     try {
-        // Récupérer la question et le nombre total de questions
+        // Retrieve question and total number of questions
         const questionData = await getNQuestion(quizId, currentQuestion);
         
-        // Cas où nous sommes à la fin du quiz ou où aucune question n'a été trouvée
+        // Case where we've reached the end of the quiz or no questions have been found
         if (!questionData.question) {
             console.log(`End of quiz reached for quizId: ${quizId}`);
             
-            // Marquer le lobby comme terminé
+            // Mark lobby complete
             await updateLobby(lobbyId, undefined, true);
             
-            // Envoyer un message indiquant la fin du quiz
+            // Send a message indicating the end of the quiz
             serve.sendMessageToALobby(lobbyId, JSON.stringify({
                 type: WsMessageType.question,
-                question: { question: "Quiz terminé!", questionId: "end" },
+                question: { question: "Quiz over!", questionId: "end" },
                 answers: [],
                 time: new Date(),
                 state: {
@@ -228,10 +228,10 @@ async function sendQuestion(
             return;
         }
         
-        // Récupérer les réponses pour cette question
+        // Retrieve answers for this question
         const answers = await getAnswers(questionData.question.questionId);
         
-        // Préparer le message à envoyer
+        // Prepare the message to be sent
         const data: QuestionWsMessage = {
             type: WsMessageType.question,
             question: questionData.question,
@@ -243,16 +243,16 @@ async function sendQuestion(
             },
         };
         
-        // Envoyer la question aux joueurs
+        // Send question to players
         serve.sendMessageToALobby(lobbyId, JSON.stringify(data));
         
     } catch (error) {
         console.error(`Error in sendQuestion: ${error}`);
         
-        // En cas d'erreur, marquer le lobby comme terminé
+        // In the event of an error, mark the lobby as finished.
         await updateLobby(lobbyId, undefined, true);
         
-        // Informer les joueurs qu'une erreur s'est produite
+        // Inform players that an error has occurred
         serve.sendMessageToALobby(lobbyId, JSON.stringify({
             type: WsMessageType.question,
             question: { question: "Une erreur s'est produite!", questionId: "error" },
@@ -260,7 +260,7 @@ async function sendQuestion(
             time: new Date(),
             state: {
                 current: 1,
-                end: 0,  // Indique une condition d'erreur
+                end: 0,  // Indicates an error condition
             },
         }));
     }
