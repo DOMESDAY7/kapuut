@@ -5,6 +5,9 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { baseUrlAPI } from '@/consts';
 import { Questions } from '@/types/model';
 import { cn } from '@/lib/utils';
+import { useWebSocket, WebSocketProvider } from '@/services/ws';
+import { WsMessageType } from '@/types/ws.d';
+import { useNavigate } from 'react-router-dom';
 
 type QuizDisplay = {
     quizId: string;
@@ -12,15 +15,39 @@ type QuizDisplay = {
     questions: Questions[];
 }
 
-export default function QuizList() {
+// Composant principal exporté qui utilise le WebSocketProvider
+export default function QuizListPage() {
+    return (
+        <WebSocketProvider lobbyCode="global">
+            <QuizList />
+        </WebSocketProvider>
+    )
+}
+
+// Composant interne qui utilise le contexte WebSocket
+function QuizList() {
     const [quizzes, setQuizzes] = useState<QuizDisplay[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const { sendMessage, lastMessage } = useWebSocket();
+    const navigate = useNavigate();
+
+    // Écouter les messages du WebSocket
+    useEffect(() => {
+        if (!lastMessage) return;
+
+        console.log('Message received:', lastMessage);
+        
+        // Vérifier si nous avons reçu un code de lobby
+        if (lastMessage.lobbyCode) {
+            navigate(`/lobby/${lastMessage.lobbyCode}`);
+        }
+    }, [lastMessage, navigate]);
 
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
-                const resGetQuizzes = await fetch(`http://localhost:3100/quiz`, {
+                const resGetQuizzes = await fetch(`${baseUrlAPI}/api/quiz`, {
                     headers: {
                         'Content-Type': 'application/json',
                     }
@@ -45,33 +72,14 @@ export default function QuizList() {
     ) ?? [];
 
     const handleCreateLobby = (quizId: string) => {
-        try{
-            const ws = new WebSocket('ws://localhost:3000');
-        
-            ws.onopen = () => {
-                
-                // Envoyer un message pour créer un lobby
-                ws.send(JSON.stringify({
-                    type: 'create',
-                    date: new Date(),
-                    quizId: quizId
-                }));
-            };
-            
-            ws.onmessage = (event) => {
-                
-               // redirect to lobby page
-                const data = JSON.parse(event.data);
-                if(data.lobbyCode){
-                    window.location.href = `/lobby/${data.lobbyCode}`;
-                }else{
-                    console.error("Invalid lobby code:", data);
-                }
-            };
-        }catch(e){
-
-        }
+        // Utiliser le contexte WebSocket pour envoyer le message
+        sendMessage({
+            type: WsMessageType.create,
+            date: new Date(),
+            quizId: quizId
+        });
     }
+
     return (
         <div className="w-full flex flex-col items-center mt-5 gap-5 pb-16 text-accent">
             <h1 className="text-3xl font-bold">Browse all quiz</h1>
@@ -100,7 +108,7 @@ export default function QuizList() {
                         {isLoading ? 'Chargement...' : `${filteredQuizzes.length} quiz available`}
                     </h2>
                     <Button
-                        onClick={() => window.location.href = '/create-quiz'}
+                        onClick={() => navigate('/create-quiz')}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -139,16 +147,6 @@ export default function QuizList() {
                                     </div>
                                 </CardContent>
                                 <CardFooter className="flex gap-2">
-                                    {/* <Button
-                                        variant="outline"
-                                        className="flex-1"
-                                        onClick={() => window.location.href = `/quiz/${quiz.quizId}/edit`}
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-                                        </svg>
-                                        Edit
-                                    </Button> */}
                                     <Button
                                         className={cn(buttonVariants({ variant: "default" }), "flex-1 bg-green-600 hover:bg-green-700")}
                                         onClick={() => handleCreateLobby(quiz.quizId)}

@@ -1,6 +1,7 @@
 import H1 from '@/components/ui/H1';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { baseUrlAPI } from '@/consts';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -30,7 +31,7 @@ export default function LeaderboardPage() {
                 setError(null);
                 
                 // Appel à l'API du service de leaderboard
-                const response = await fetch(`http://localhost:8080/leaderboard/${lobbyCode}`);
+                const response = await fetch(`${baseUrlAPI}/api/leaderboard/${lobbyCode}`);
                 const responseData = await response.json();
                 console.log(responseData);
                 const data = responseData as Player[];

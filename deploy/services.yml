@@ -33,6 +33,34 @@ spec:
             port:
               number: 3100
             host: quiz-creator.default.svc.cluster.local
+
+    - match:
+      - uri:
+          prefix: /ws
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            port:
+              number: 3000
+            host: quiz-master.default.svc.cluster.local
+          headers:
+            request:
+              set:
+                Upgrade: websocket
+                Connection: Upgrade
+    
+    - match:
+        - uri:
+            prefix: /api/leaderboard
+      rewrite:
+        uri: /leaderboard
+      route:
+        - destination:
+            port:
+              number: 8080
+            host: quiz-leaderboard.default.svc.cluster.local
+
     - match:
         - uri:
             prefix: /

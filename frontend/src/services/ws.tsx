@@ -12,7 +12,8 @@ const WebSocketContext = createContext<WebSocketContextProps>({
     lastMessage: null,
 });
 
-const wsURL = import.meta.env.VITE_WS_URL ?? "ws://localhost:3000";
+const wsURL = import.meta.env.VITE_WS_URL ?? 
+  `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws`;
 
 export const WebSocketProvider: React.FC<{ lobbyCode: string, children: React.ReactNode }> = ({ lobbyCode, children }) => {
     const [ws, setWs] = useState<WebSocket | null>(null);
