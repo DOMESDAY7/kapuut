@@ -1,7 +1,7 @@
 export const APP_NAME = "kapuut";
 export const avatarList =
     ["🥸", "😍", "🤩", "🤑", "🥳"]
-export const baseUrlAPI = import.meta.env.PROD ? "https://kapuut.domesday.fr" : "http://localhost";
+export const baseUrlAPI = import.meta.env.PROD ? "http://kapuut.domesday.fr" : "http://localhost";
 
 const getWebSocketUrl = () => {
     // Priority to environment variable if it exists
