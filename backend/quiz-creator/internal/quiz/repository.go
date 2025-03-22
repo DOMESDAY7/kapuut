@@ -19,7 +19,7 @@ func NewQuizRepository(db *sql.DB) *QuizRepository {
 	return &QuizRepository{db: db}
 }
 func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
-	// Requête avec jointure pour récupérer les quizzes et leurs questions en une seule fois
+	// Query with join to retrieve quizzes and their questions in one go
 	rows, err := qr.db.Query(`
 		SELECT q."quizId", q."quiz", que."questionId", que."question"
 		FROM "Quizzes" q
@@ -34,20 +34,20 @@ func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
 	quizzes := []Quiz{}
 	quizMap := make(map[string]*Quiz)
 
-	// Parcours des lignes
+	// Browse through the rows
 	for rows.Next() {
 		var quizId, quiz string
 		var questionId, question sql.NullString
 
-		// Extraction des données de chaque ligne
+		// Data extraction for each line
 		if err := rows.Scan(&quizId, &quiz, &questionId, &question); err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
 
-		// Vérifier si nous avons déjà traité ce quiz
+		// Check if we've already taken this quiz
 		_, exists := quizMap[quizId]
 		if !exists {
-			// Création d'un nouveau quiz
+			// Create a new quiz
 			newQuiz := Quiz{
 				QuizId:    quizId,
 				Quiz:      quiz,
@@ -58,7 +58,7 @@ func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
 			_ = &newQuiz
 		}
 
-		// Ajouter la question au quiz si elle existe
+		// Add question to quiz if available
 		if questionId.Valid && question.Valid {
 			questionData := Question{
 				QuestionId: questionId.String,
@@ -69,7 +69,7 @@ func (qr *QuizRepository) GetAllQuizzes() ([]Quiz, error) {
 		}
 	}
 
-	// Vérifie si une erreur s'est produite pendant l'itération
+	// Checks if an error has occurred during iteration
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("error iterating rows: %w", err)
 	}
