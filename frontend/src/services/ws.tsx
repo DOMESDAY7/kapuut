@@ -1,4 +1,4 @@
-import { baseUrlAPI } from "@/consts";
+import { baseUrlAPI, wsURL } from "@/consts";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface WebSocketContextProps {
@@ -12,22 +12,6 @@ const WebSocketContext = createContext<WebSocketContextProps>({
     sendMessage: () => { },
     lastMessage: null,
 });
-
-const getWebSocketUrl = () => {
-    // Priorité à la variable d'environnement si elle existe
-    if (import.meta.env.VITE_WS_URL) {
-      return import.meta.env.VITE_WS_URL;
-    }
-  
-    // Sinon, construire l'URL à partir de la location actuelle
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.host; // Déjà au format hostname:port
-  
-    return `${protocol}//${host}/socket`;
-  };
-  
-
-const wsURL = getWebSocketUrl();;
 
 export const WebSocketProvider: React.FC<{ lobbyCode: string, children: React.ReactNode }> = ({ lobbyCode, children }) => {
     const [ws, setWs] = useState<WebSocket | null>(null);
