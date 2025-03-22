@@ -41,11 +41,20 @@ function LobbyContent({ id }: { id?: string }) {
 
     useEffect(() => {
         if (!lastMessage) return;
-        if (lastMessage.type === WsMessageType.connect) {
-            console.log('Player connected:', lastMessage);
-            setPlayers([lastMessage.newPlayer.playerName, ...players]);
+        
+        if (lastMessage.type === WsMessageType.lobby) {
+            console.log('Players in lobby:', lastMessage);
+            // Assurez-vous que lastMessage.players est un tableau
+            if (Array.isArray(lastMessage.players)) {
+                setPlayers(lastMessage.players);
+            }
         }
-
+        else if (lastMessage.type === WsMessageType.connect) {
+            console.log('Player connected:', lastMessage);
+            
+            // Ne mettez pas à jour l'état ici, la mise à jour viendra du message WsMessageType.lobby
+            // qui sera envoyé à tous les clients
+        }
     }, [lastMessage]);
 
     const handleConnect = (name: string) => {

@@ -6,6 +6,7 @@ import {
     type CloseWsMessage,
     type ConnectWsMessage,
     type CreateWsMessage,
+    type LobbyWsMessage,
     type QuestionWsMessage,
     type StartWsMessage,
 } from "./models/types";
@@ -13,6 +14,7 @@ import { getAnswers, getAnwserById } from "./services/answers-services";
 import {
     createLobby,
     getLobbyByCode,
+    getLobbyByCodeWithPlayers,
     updateLobby,
 } from "./services/lobbys-service";
 import {
@@ -45,7 +47,10 @@ export async function gameManager(
         try {
             const obj: ConnectWsMessage = JSON.parse(message.toString());
             const player = await createPlayer(obj.playerName, obj.lobbyCode);
+            const lobby = await getLobbyByCode(obj.lobbyCode);
+            
             serve.addClient(ws, player.playerId, player.lobbyId);
+            
             ws.send(JSON.stringify({
                 type: WsMessageType.connect,
                 newPlayer: {
@@ -54,7 +59,15 @@ export async function gameManager(
                     lobbyCode: obj.lobbyCode,
                 }
             }));
-
+            
+            const allPlayers = await getAllPlayerByLobby(player.lobbyId);
+            const playerNames = allPlayers.map(p => p.name);
+            
+            serve.sendMessageToALobby(player.lobbyId, JSON.stringify({
+                type: WsMessageType.lobby,
+                players: playerNames,
+                lobbyCode: obj.lobbyCode
+            }));
         } catch (error) {
             console.error("Error parsing message:", error);
             ws.send(JSON.stringify({ error: `invalid JSON format : ${message}` }));

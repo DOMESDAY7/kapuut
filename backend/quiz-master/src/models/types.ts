@@ -7,12 +7,19 @@ export enum WsMessageType {
     question = "question",
     answer = "answer",
     close = "close",
+    lobby = "lobby",
 }
 
 export interface CreateWsMessage {
     type: WsMessageType;
     date: Date;
     quizId: string;
+}
+
+export interface LobbyWsMessage {
+    type: WsMessageType;
+    date: Date;
+    lobbyCode: string;
 }
 
 export interface ConnectWsMessage {

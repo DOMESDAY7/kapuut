@@ -16,6 +16,17 @@ export const getLobbyByCode = async (lobbyCode: string) => {
     });
 };
 
+export const getLobbyByCodeWithPlayers = async (lobbyCode: string) => {
+    return await prisma.lobbys.findUnique({
+        where: {
+            lobbyCode,
+        },
+        include: {
+            player: true,
+        },
+    });
+}
+
 export const updateLobby = async (
     lobbyId: string,
     currentQuestion?: number,

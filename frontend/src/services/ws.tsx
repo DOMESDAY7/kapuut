@@ -55,6 +55,7 @@ export const WebSocketProvider: React.FC<{ lobbyCode: string, children: React.Re
     const sendMessage = (msg: any) => {
         
         if (ws && ws.readyState === WebSocket.OPEN) {
+            console.log("Sending message", msg);
             ws.send(JSON.stringify(msg));
         }
     };

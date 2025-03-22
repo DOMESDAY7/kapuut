@@ -5,4 +5,5 @@ export enum WsMessageType {
     question = "question",
     answer = "answer",
     close = "close",
+    lobby = "lobby",
 }
