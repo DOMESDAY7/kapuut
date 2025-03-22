@@ -34,3 +34,5 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: ghcr.io/${{ env.actor }}/kapuut.quiz-frontend:latest
+          build-args: |
+            VITE_API_URL={{env.ISTIO_URL}}
