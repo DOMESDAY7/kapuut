@@ -6,6 +6,7 @@ import ProfileSetupPage from './pages/profile-setup';
 import Background from './components/ui/Background';
 import CreateQuizPage from './pages/create-quiz';
 import QuizList from './pages/quizzes';
+import Game from './pages/game';
 
 function App() {
 
@@ -15,11 +16,12 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/game/:id" element={<Game />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/quizzes" element={<QuizList />} />
           <Route path="/lobby/:id" element={<LobbyPage />} />
-          <Route path="/profile-setup" element={<ProfileSetupPage />} />
           <Route path="/create-quiz" element={<CreateQuizPage />} />
+          <Route path="/profile-setup" element={<ProfileSetupPage />} />
         </Routes>
       </Router>
     </div>

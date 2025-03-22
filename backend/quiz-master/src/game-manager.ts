@@ -48,9 +48,9 @@ export async function gameManager(
             const obj: ConnectWsMessage = JSON.parse(message.toString());
             const player = await createPlayer(obj.playerName, obj.lobbyCode);
             const lobby = await getLobbyByCode(obj.lobbyCode);
-            
+
             serve.addClient(ws, player.playerId, player.lobbyId);
-            
+
             ws.send(JSON.stringify({
                 type: WsMessageType.connect,
                 newPlayer: {
@@ -59,10 +59,10 @@ export async function gameManager(
                     lobbyCode: obj.lobbyCode,
                 }
             }));
-            
+
             const allPlayers = await getAllPlayerByLobby(player.lobbyId);
             const playerNames = allPlayers.map(p => p.name);
-            
+
             serve.sendMessageToALobby(player.lobbyId, JSON.stringify({
                 type: WsMessageType.lobby,
                 players: playerNames,
@@ -84,11 +84,15 @@ export async function gameManager(
                 return;
             }
 
-            ws.send(`< Game started! lobbyCode : ${lobby.lobbyCode} >`);
-            serve.sendMessageToALobby(
-                lobby.lobbyId,
-                `< Game started! lobbyCode : ${lobby.lobbyCode} >`
-            );
+            ws.send(JSON.stringify({
+                type: WsMessageType.start,
+                quizId: lobby.quizId,
+                lobbyCode: lobby.lobbyCode,
+            }));
+            serve.sendMessageToALobby(lobby.lobbyId, JSON.stringify({
+                type: WsMessageType.start,
+                lobbyCode: lobby.lobbyCode
+            }));
             await sendQuestion(
                 lobby.quizId,
                 lobby.currentQuestion,
@@ -198,23 +202,66 @@ async function sendQuestion(
     currentQuestion: number,
     lobbyId: string
 ): Promise<void> {
-    const question = await getNQuestion(quizId, currentQuestion);
-    const answers = await getAnswers(question.question.questionId);
-
-    const data: QuestionWsMessage = {
-        type: WsMessageType.question,
-        question: question.question,
-        answers: answers,
-        time: new Date(),
-        state: {
-            current: currentQuestion + 1,
-            end: question.questionCount,
-        },
-    };
-
-    if (data.state.current > data.state.end) {
-        await updateLobby(lobbyId, undefined, true);
-    } else {
+    try {
+        // Récupérer la question et le nombre total de questions
+        const questionData = await getNQuestion(quizId, currentQuestion);
+        
+        // Cas où nous sommes à la fin du quiz ou où aucune question n'a été trouvée
+        if (!questionData.question) {
+            console.log(`End of quiz reached for quizId: ${quizId}`);
+            
+            // Marquer le lobby comme terminé
+            await updateLobby(lobbyId, undefined, true);
+            
+            // Envoyer un message indiquant la fin du quiz
+            serve.sendMessageToALobby(lobbyId, JSON.stringify({
+                type: WsMessageType.question,
+                question: { question: "Quiz terminé!", questionId: "end" },
+                answers: [],
+                time: new Date(),
+                state: {
+                    current: questionData.questionCount + 1,
+                    end: questionData.questionCount,
+                },
+            }));
+            
+            return;
+        }
+        
+        // Récupérer les réponses pour cette question
+        const answers = await getAnswers(questionData.question.questionId);
+        
+        // Préparer le message à envoyer
+        const data: QuestionWsMessage = {
+            type: WsMessageType.question,
+            question: questionData.question,
+            answers: answers,
+            time: new Date(),
+            state: {
+                current: currentQuestion + 1,
+                end: questionData.questionCount,
+            },
+        };
+        
+        // Envoyer la question aux joueurs
         serve.sendMessageToALobby(lobbyId, JSON.stringify(data));
+        
+    } catch (error) {
+        console.error(`Error in sendQuestion: ${error}`);
+        
+        // En cas d'erreur, marquer le lobby comme terminé
+        await updateLobby(lobbyId, undefined, true);
+        
+        // Informer les joueurs qu'une erreur s'est produite
+        serve.sendMessageToALobby(lobbyId, JSON.stringify({
+            type: WsMessageType.question,
+            question: { question: "Une erreur s'est produite!", questionId: "error" },
+            answers: [],
+            time: new Date(),
+            state: {
+                current: 1,
+                end: 0,  // Indique une condition d'erreur
+            },
+        }));
     }
 }
