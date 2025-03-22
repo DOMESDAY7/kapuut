@@ -100,7 +100,7 @@ kubectl create secret generic quiz-creator-env --from-env-file=backend/quiz-crea
 ## 📦 Docker Images
 
 Docker images are available in the GitHub Package Registry:
-- Quiz Creator: [https://github.com/DOMESDAY7/kapuut/pkgs/container/kapuut.quiz-creator](https://github.com/DOMESDAY7/kapuut/pkgs/container/kapuut.quiz-creator)
+https://github.com/DOMESDAY7?tab=packages&repo_name=kapuut
 
 ## 📚 What We Learned
 
